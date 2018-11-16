@@ -1,0 +1,146 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+
+# Handle group assignment: libvirt (Debian) and libvirtd (Ubuntu)
+ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
+	LIB_VIRT_GROUP = libvirt
+	DISTRO = Ubuntu
+else
+	LIB_VIRT_GROUP = libvirt
+	DISTRO = Debian8
+endif
+
+dpkg_buildflags = DEB_LDFLAGS_MAINT_APPEND="-Wl,--as-needed" dpkg-buildflags
+
+# injecting CPPFLAGS to CFLAGS and CXXFLAGS
+export CPPFLAGS:=$(shell $(dpkg_buildflags) --get CPPFLAGS)
+export CFLAGS:=$(shell $(dpkg_buildflags) --get CFLAGS) $(CPPFLAGS)
+export CXXFLAGS:=$(shell $(dpkg_buildflags) --get CXXFLAGS) $(CPPFLAGS)
+export LDFLAGS:=$(shell $(dpkg_buildflags) --get LDFLAGS)
+
+%:
+	dh $@ --with javahelper,bash-completion
+
+override_dh_auto_build:
+	#scons  mysql=yes new_xmlrpc=yes
+	tar xzvf build_opennebula.tar.gz
+	#XMLRPC_DIR="debian/" debian/build_opennebula.sh
+	./build_opennebula.sh
+	(cd src/oca/java/; \
+	ln -s /usr/share/java/xmlrpc-common-3.1.jar lib/; \
+	ln -s /usr/share/java/xmlrpc-client-3.1.jar lib/; \
+	ln -s /usr/share/java/ws-commons-util.jar lib/; \
+	./build.sh -d)
+
+override_dh_auto_install:
+	DESTDIR=dist ./install.sh
+	dh_auto_install
+ifneq (,$(filter %NAME%-common, $(shell dh_listpackages)))
+	dh_install -p %NAME%-common share/pkgs/logrotate/opennebula /etc/logrotate.d/
+	dh_install -p %NAME%-common share/pkgs/${DISTRO}/opennebula.sudoers \
+		/etc/sudoers.d
+	mv debian/%NAME%-common/etc/sudoers.d/opennebula.sudoers \
+		debian/%NAME%-common/etc/sudoers.d/%NAME%
+endif
+ifneq (,$(filter %NAME%, $(shell dh_listpackages)))
+	dh_install -p %NAME% share/pkgs/${DISTRO}-systemd/opennebula.service \
+		/lib/systemd/system/
+	dh_install -p %NAME% share/pkgs/${DISTRO}-systemd/opennebula-scheduler.service \
+		/lib/systemd/system/
+	dh_install -p %NAME% share/pkgs/${DISTRO}-systemd/opennebula.conf /usr/lib/tmpfiles.d/
+endif
+ifneq (,$(filter %NAME%-sunstone, $(shell dh_listpackages)))
+	dh_install -p %NAME%-sunstone share/pkgs/${DISTRO}-systemd/%NAME%-sunstone.service \
+		/lib/systemd/system/
+	dh_install -p %NAME%-sunstone share/pkgs/${DISTRO}-systemd/%NAME%-econe.service \
+		/lib/systemd/system/
+	dh_install -p %NAME%-sunstone share/pkgs/${DISTRO}-systemd/%NAME%-novnc.service \
+		/lib/systemd/system/
+
+	cp share/pkgs/${DISTRO}-systemd/opennebula.conf \
+		share/pkgs/${DISTRO}-systemd/opennebula-sunstone.conf
+	dh_install -p %NAME%-sunstone share/pkgs/${DISTRO}-systemd/opennebula-sunstone.conf \
+		/usr/lib/tmpfiles.d/
+endif
+ifneq (,$(filter %NAME%-gate, $(shell dh_listpackages)))
+	dh_install -p %NAME%-gate share/pkgs/${DISTRO}-systemd/%NAME%-gate.service \
+		/lib/systemd/system/
+
+	cp share/pkgs/${DISTRO}-systemd/opennebula.conf \
+		share/pkgs/${DISTRO}-systemd/opennebula-gate.conf
+	dh_install -p %NAME%-gate share/pkgs/${DISTRO}-systemd/opennebula-gate.conf \
+		/usr/lib/tmpfiles.d/
+endif
+ifneq (,$(filter %NAME%-flow, $(shell dh_listpackages)))
+	dh_install -p %NAME%-flow share/pkgs/${DISTRO}-systemd/%NAME%-flow.service \
+		/lib/systemd/system/
+
+	cp share/pkgs/${DISTRO}-systemd/opennebula.conf \
+		share/pkgs/${DISTRO}-systemd/opennebula-flow.conf
+	dh_install -p %NAME%-flow share/pkgs/${DISTRO}-systemd/opennebula-flow.conf \
+		/usr/lib/tmpfiles.d/
+endif
+ifneq (,$(filter %NAME%-node, $(shell dh_listpackages)))
+	dh_install -p %NAME%-node share/etc/sysctl.d/bridge-nf-call.conf /etc/sysctl.d/
+	dh_install -p %NAME%-node share/pkgs/${DISTRO}-systemd/opennebula-node.conf \
+		/usr/lib/tmpfiles.d/
+endif
+ifneq (,$(filter %NAME%-tools, $(shell dh_listpackages)))
+	cp share/install_gems/Ubuntu1804/Gemfile.lock dist/usr/share/one/
+endif
+
+override_dh_installinit:
+ifneq (,$(filter %NAME%, $(shell dh_listpackages)))
+	dh_installinit -p %NAME% --name=%NAME% --onlyscripts --no-start
+	dh_installinit -p %NAME% --name=%NAME%-scheduler --onlyscripts --no-start
+endif
+ifneq (,$(filter %NAME%-sunstone, $(shell dh_listpackages)))
+	dh_installinit -p %NAME%-sunstone --name=%NAME%-sunstone --onlyscripts --no-start
+	dh_installinit -p %NAME%-sunstone --name=%NAME%-econe --onlyscripts --no-start
+	dh_installinit -p %NAME%-sunstone --name=%NAME%-novnc --onlyscripts --no-start
+endif
+ifneq (,$(filter %NAME%-gate, $(shell dh_listpackages)))
+	dh_installinit -p %NAME%-gate --name=%NAME%-gate --onlyscripts --no-start
+endif
+ifneq (,$(filter %NAME%-flow, $(shell dh_listpackages)))
+	dh_installinit -p %NAME%-flow --name=%NAME%-flow --onlyscripts --no-start
+endif
+	dh_installinit
+
+override_dh_installdeb:
+ifneq (,$(filter %NAME%-node, $(shell dh_listpackages)))
+	sed "s/@LIBVIRTGRP@/${LIB_VIRT_GROUP}/g" debian/%NAME%-node.postinst.in > debian/%NAME%-node.postinst
+endif
+	dh_installdeb
+
+override_dh_fixperms:
+	dh_fixperms
+ifneq (,$(filter %NAME%-common, $(shell dh_listpackages)))
+	chmod 0440 debian/%NAME%-common/etc/sudoers.d/%NAME%
+endif
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf dist/
+	scons --clean .
+	(cd src/oca/java/; \
+	rm lib/xmlrpc-common-3.1.jar; \
+	rm lib/xmlrpc-client-3.1.jar; \
+	rm lib/ws-commons-util.jar; \
+	rm -rf jar/; rm -rf share/doc/; \
+	./build.sh -c)
+	-rm -Rf .scons_temp
+	-rm -Rf share/scons/lex_bison.pyc \
+		src/nebula/.xmlrpc_test/xmlrpc_test.* \
+		src/scheduler/.xmlrpc_test/xmlrpc_test.* \
+		src/scheduler/src/sched/.xmlrpc_test \
+		.xmlrpc_test
+	-rm -Rf debian/%NAME%-node.postinst
+
+get-orig-source:
+	uscan --force-download --no-symlink
+
+.PHONY: override_dh_strip
+override_dh_strip:
+	dh_strip --exclude=opennebula
