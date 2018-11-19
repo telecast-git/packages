@@ -22,6 +22,7 @@ Build-Depends: bash-completion,
                libcurl4-openssl-dev,
                libcurl4,
                libsystemd-dev,
+               libvncserver-dev,
                ruby,
                scons
 Standards-Version: 3.9.3
