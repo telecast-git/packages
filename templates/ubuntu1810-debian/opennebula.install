@@ -1,0 +1,74 @@
+dist/var/lib/one/datastores/*    /var/lib/one/datastores
+dist/var/lib/one/remotes/etc/*                /var/lib/one/remotes/etc/
+dist/var/lib/one/remotes/auth/*               /var/lib/one/remotes/auth/
+dist/var/lib/one/remotes/datastore/*          /var/lib/one/remotes/datastore/
+dist/var/lib/one/remotes/hooks/*              /var/lib/one/remotes/hooks/
+dist/var/lib/one/remotes/im/az.d/*            /var/lib/one/remotes/im/az.d/
+dist/var/lib/one/remotes/im/ec2.d/*           /var/lib/one/remotes/im/ec2.d/
+dist/var/lib/one/remotes/im/kvm.d/*           /var/lib/one/remotes/im/kvm.d/
+dist/var/lib/one/remotes/im/kvm-probes.d/*    /var/lib/one/remotes/im/kvm-probes.d/
+dist/var/lib/one/remotes/im/one.d/*           /var/lib/one/remotes/im/one.d/
+dist/var/lib/one/remotes/im/vcenter.d/*       /var/lib/one/remotes/im/vcenter.d/
+dist/var/lib/one/remotes/im/run_probes        /var/lib/one/remotes/im/
+dist/var/lib/one/remotes/im/stop_probes       /var/lib/one/remotes/im/
+dist/var/lib/one/remotes/ipam/*               /var/lib/one/remotes/ipam/
+dist/var/lib/one/remotes/market/*             /var/lib/one/remotes/market/
+dist/var/lib/one/remotes/tm/*                 /var/lib/one/remotes/tm/
+dist/var/lib/one/remotes/vmm/az/*             /var/lib/one/remotes/vmm/az/
+dist/var/lib/one/remotes/vmm/ec2/*            /var/lib/one/remotes/vmm/ec2/
+dist/var/lib/one/remotes/vmm/kvm/*            /var/lib/one/remotes/vmm/kvm/
+dist/var/lib/one/remotes/vmm/lib/*            /var/lib/one/remotes/vmm/lib/
+dist/var/lib/one/remotes/vmm/one/*            /var/lib/one/remotes/vmm/one/
+dist/var/lib/one/remotes/vmm/vcenter/*        /var/lib/one/remotes/vmm/vcenter/
+dist/var/lib/one/remotes/vnm/*                /var/lib/one/remotes/vnm/
+dist/var/lib/one/remotes/scripts_common.rb    /var/lib/one/remotes/
+dist/var/lib/one/remotes/scripts_common.sh    /var/lib/one/remotes/
+dist/var/lib/one/remotes/VERSION              /var/lib/one/remotes/
+dist/var/lib/one/vms             /var/lib/one/
+
+dist/etc/one/defaultrc           /etc/one/
+dist/etc/one/tmrc                /etc/one/
+dist/etc/one/oned.conf           /etc/one/
+dist/etc/one/sched.conf          /etc/one/
+dist/etc/one/ec2_driver.conf     /etc/one/
+dist/etc/one/ec2_driver.default  /etc/one/
+dist/etc/one/az_*                /etc/one/
+dist/etc/one/vcenter_driver.conf      /etc/one/
+dist/etc/one/vcenter_driver.default   /etc/one/
+
+dist/etc/one/hm/*                  /etc/one/hm/
+#dist/etc/one/im_ec2/*              /etc/one/im_ec2/
+#dist/etc/one/vmm_ec2/*             /etc/one/vmm_ec2/
+dist/etc/one/vmm_exec/*            /etc/one/vmm_exec/
+dist/etc/one/auth/*                /etc/one/auth/
+
+dist/usr/lib/one/sh/*           /usr/lib/one/sh/
+dist/usr/lib/one/mads/*         /usr/lib/one/mads/
+
+dist/usr/lib/one/ruby/CommandManager.rb    /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/OpenNebulaDriver.rb  /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/scripts_common.rb    /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/ssh_stream.rb        /usr/lib/one/ruby/
+
+dist/usr/lib/one/ruby/az_driver.rb  /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/ec2_driver.rb /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/opennebula_driver.rb /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/vcenter_driver.rb     /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/vcenter_driver/*      /usr/lib/one/ruby/vcenter_driver/
+
+dist/usr/lib/one/ruby/onedb/*              /usr/lib/one/ruby/onedb/
+
+dist/usr/lib/one/ruby/one_vnm.rb                              /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/DriverExecHelper.rb                     /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/ActionManager.rb                        /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/VirtualMachineDriver.rb                 /usr/lib/one/ruby/
+
+dist/usr/share/one/examples/*       /usr/share/one/examples/
+dist/usr/share/one/esx-fw-vnc/*     /usr/share/one/esx-fw-vnc/
+dist/usr/share/one/follower_cleanup /usr/share/one/
+
+dist/usr/bin/oned          /usr/bin/
+dist/usr/bin/mm_sched      /usr/bin/
+dist/usr/bin/onedb         /usr/bin/
+dist/usr/bin/tty_expect    /usr/bin/
+dist/usr/bin/one           /usr/bin/
