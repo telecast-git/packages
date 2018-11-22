@@ -1021,6 +1021,7 @@ EOF
 %{_bindir}/onevm
 %{_bindir}/onevmgroup
 %{_bindir}/onevnet
+%{_bindir}/onevntemplate
 %{_bindir}/onevrouter
 %{_bindir}/onezone
 
@@ -1068,6 +1069,7 @@ EOF
 /usr/lib/one/ruby/cli/one_helper/onevmgroup_helper.rb
 /usr/lib/one/ruby/cli/one_helper/onevm_helper.rb
 /usr/lib/one/ruby/cli/one_helper/onevnet_helper.rb
+/usr/lib/one/ruby/cli/one_helper/onevntemplate_helper.rb
 /usr/lib/one/ruby/cli/one_helper/onevrouter_helper.rb
 /usr/lib/one/ruby/cli/one_helper/onezone_helper.rb
 

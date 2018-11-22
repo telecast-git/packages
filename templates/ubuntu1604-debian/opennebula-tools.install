@@ -40,6 +40,7 @@ dist/usr/lib/one/ruby/cli/one_helper/onevdc_helper.rb        /usr/lib/one/ruby/c
 dist/usr/lib/one/ruby/cli/one_helper/onevmgroup_helper.rb    /usr/lib/one/ruby/cli/one_helper/
 dist/usr/lib/one/ruby/cli/one_helper/onevm_helper.rb         /usr/lib/one/ruby/cli/one_helper/
 dist/usr/lib/one/ruby/cli/one_helper/onevnet_helper.rb       /usr/lib/one/ruby/cli/one_helper/
+dist/usr/lib/one/ruby/cli/one_helper/onevntemplate_helper.rb /usr/lib/one/ruby/cli/one_helper/
 dist/usr/lib/one/ruby/cli/one_helper/onevrouter_helper.rb    /usr/lib/one/ruby/cli/one_helper/
 dist/usr/lib/one/ruby/cli/one_helper/onezone_helper.rb      /usr/lib/one/ruby/cli/one_helper/
 
@@ -64,6 +65,7 @@ dist/usr/bin/oneuser       /usr/bin/
 dist/usr/bin/onevm         /usr/bin/
 dist/usr/bin/onevmgroup    /usr/bin/
 dist/usr/bin/onevnet       /usr/bin/
+dist/usr/bin/onevntemplate /usr/bin/
 dist/usr/bin/oneacct       /usr/bin/
 dist/usr/bin/onezone       /usr/bin/
 dist/usr/bin/onevcenter    /usr/bin/
