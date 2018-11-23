@@ -7,6 +7,8 @@ dist/var/lib/one/remotes/im/az.d/*            /var/lib/one/remotes/im/az.d/
 dist/var/lib/one/remotes/im/ec2.d/*           /var/lib/one/remotes/im/ec2.d/
 dist/var/lib/one/remotes/im/kvm.d/*           /var/lib/one/remotes/im/kvm.d/
 dist/var/lib/one/remotes/im/kvm-probes.d/*    /var/lib/one/remotes/im/kvm-probes.d/
+dist/var/lib/one/remotes/im/lxd.d/*           /var/lib/one/remotes/im/lxd.d/
+dist/var/lib/one/remotes/im/lxd-probes.d/*    /var/lib/one/remotes/im/lxd-probes.d/
 dist/var/lib/one/remotes/im/one.d/*           /var/lib/one/remotes/im/one.d/
 dist/var/lib/one/remotes/im/vcenter.d/*       /var/lib/one/remotes/im/vcenter.d/
 dist/var/lib/one/remotes/im/run_probes        /var/lib/one/remotes/im/
@@ -17,6 +19,7 @@ dist/var/lib/one/remotes/tm/*                 /var/lib/one/remotes/tm/
 dist/var/lib/one/remotes/vmm/az/*             /var/lib/one/remotes/vmm/az/
 dist/var/lib/one/remotes/vmm/ec2/*            /var/lib/one/remotes/vmm/ec2/
 dist/var/lib/one/remotes/vmm/kvm/*            /var/lib/one/remotes/vmm/kvm/
+dist/var/lib/one/remotes/vmm/lxd/*            /var/lib/one/remotes/vmm/lxd/
 dist/var/lib/one/remotes/vmm/lib/*            /var/lib/one/remotes/vmm/lib/
 dist/var/lib/one/remotes/vmm/one/*            /var/lib/one/remotes/vmm/one/
 dist/var/lib/one/remotes/vmm/vcenter/*        /var/lib/one/remotes/vmm/vcenter/
