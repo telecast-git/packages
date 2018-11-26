@@ -1,1 +1,1 @@
-dist/src/svncterm_server/svncterm_server /usr/bin/
+dist/usr/bin/svncterm_server /usr/bin/
