@@ -1,1 +1,1 @@
-dist/usr/bin/svncterm_server /usr/bin/
+src/vmm_mad/remotes/lib/lxd/svncterm_server/svncterm            /usr/bin/
