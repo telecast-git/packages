@@ -179,6 +179,14 @@ Description: empty package to prepare a machine as OpenNebula Node
  This package prepares the machine for being a node in an OpenNebula
  cloud.
 
+Package: opennebula-node-lxd
+Architecture: all
+Depends: opennebula-node,
+         kpartx,
+         lxd (>= 3.0.0)
+Recommends: openssh-server | ssh-server
+Description: sets up an OpenNebula LXD virtualization node
+
 Package: ruby-opennebula
 Section: ruby
 Architecture: all
