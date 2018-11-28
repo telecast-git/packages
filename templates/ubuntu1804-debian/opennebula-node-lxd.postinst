@@ -35,7 +35,8 @@ profiles:
 EOF
 
 # LXD required modules for storage
-loops='max_loop=128'
+loops='max_loop=256'
+nbds='nbds_max=256'
 one_file=$one_file'.conf'
 
 echo "options loop ${loops}" >> /etc/modprobe.d/"${one_file}"
@@ -44,7 +45,7 @@ echo "loop" >> /etc/modules-load.d/"${one_file}"
 echo "nbd" >> /etc/modules-load.d/"${one_file}"
 
 modprobe loop "${loops}"
-modprobe nbd
+modprobe nbd "${nbds}"
 
 # Additional setup
 printf "Install the \"fstab\" gem if you require to create containers from multiple partition images\nIf you plan to use ceph, issue\\necho \"rbd default features = 3\" >> /etc/ceph/ceph.conf\n"
