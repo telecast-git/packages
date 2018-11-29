@@ -928,6 +928,8 @@ EOF
 %dir %{_sharedstatedir}/one/remotes/im/ec2.d
 %dir %{_sharedstatedir}/one/remotes/im/kvm.d
 %dir %{_sharedstatedir}/one/remotes/im/kvm-probes.d
+%dir %{_sharedstatedir}/one/remotes/im/lxd.d
+%dir %{_sharedstatedir}/one/remotes/im/lxd-probes.d
 %dir %{_sharedstatedir}/one/remotes/im/one.d
 %dir %{_sharedstatedir}/one/remotes/im/vcenter.d
 %dir %{_sharedstatedir}/one/remotes/ipam
@@ -937,6 +939,7 @@ EOF
 %dir %{_sharedstatedir}/one/remotes/vmm/az
 %dir %{_sharedstatedir}/one/remotes/vmm/ec2
 %dir %{_sharedstatedir}/one/remotes/vmm/kvm
+%dir %{_sharedstatedir}/one/remotes/vmm/lxd
 %dir %{_sharedstatedir}/one/remotes/vmm/lib
 %dir %{_sharedstatedir}/one/remotes/vmm/one
 %dir %{_sharedstatedir}/one/remotes/vmm/vcenter
@@ -955,6 +958,8 @@ EOF
 %{_sharedstatedir}/one/remotes/im/ec2.d/*
 %{_sharedstatedir}/one/remotes/im/kvm.d/*
 %{_sharedstatedir}/one/remotes/im/kvm-probes.d/*
+%{_sharedstatedir}/one/remotes/im/lxd.d/*
+%{_sharedstatedir}/one/remotes/im/lxd-probes.d/*
 %{_sharedstatedir}/one/remotes/im/one.d/*
 %{_sharedstatedir}/one/remotes/im/vcenter.d/*
 %{_sharedstatedir}/one/remotes/im/run_probes
@@ -965,6 +970,7 @@ EOF
 %{_sharedstatedir}/one/remotes/vmm/az/*
 %{_sharedstatedir}/one/remotes/vmm/ec2/*
 %{_sharedstatedir}/one/remotes/vmm/kvm/*
+%{_sharedstatedir}/one/remotes/vmm/lxd/*
 %{_sharedstatedir}/one/remotes/vmm/lib/*
 %{_sharedstatedir}/one/remotes/vmm/one/*
 %{_sharedstatedir}/one/remotes/vmm/vcenter/*
