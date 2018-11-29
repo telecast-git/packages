@@ -6,7 +6,7 @@ adduser oneadmin lxd
 one_file='one-lxd'
 
 # Configure LXD required sudo commands
-echo "Cmnd_Alias ONE_MAPPER = /bin/lsblk, /sbin/losetup, /bin/mount, /bin/umount, /sbin/kpartx, /usr/bin/qemu-nbd, /bin/mkdir, /bin/cat, /sbin/e2fsck, /sbin/resize2fs, /usr/sbin/xfs_growfs" > /etc/sudoers.d/"${one_file}"
+echo "Cmnd_Alias ONE_MAPPER = /bin/lsblk, /sbin/losetup, /bin/mount, /bin/umount, /sbin/kpartx, /usr/bin/qemu-nbd, /bin/mkdir, /bin/cat, /sbin/e2fsck, /sbin/resize2fs, /usr/sbin/xfs_growfs, /usr/bin/rbd, /bin/df" > /etc/sudoers.d/"${one_file}"
 
 echo "oneadmin ALL=(ALL) NOPASSWD: ONE_MAPPER" >> /etc/sudoers.d/"${one_file}"
 
