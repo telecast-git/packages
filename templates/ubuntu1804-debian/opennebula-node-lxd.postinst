@@ -3,12 +3,6 @@
 set -e
 
 adduser oneadmin lxd
-one_file='one-lxd'
-
-# Configure LXD required sudo commands
-echo "Cmnd_Alias ONE_MAPPER = /bin/lsblk, /sbin/losetup, /bin/mount, /bin/umount, /sbin/kpartx, /usr/bin/qemu-nbd, /bin/mkdir, /bin/cat, /sbin/e2fsck, /sbin/resize2fs, /usr/sbin/xfs_growfs, /usr/bin/rbd, /bin/df" > /etc/sudoers.d/"${one_file}"
-
-echo "oneadmin ALL=(ALL) NOPASSWD: ONE_MAPPER" >> /etc/sudoers.d/"${one_file}"
 
 # Configure LXD daemon
 cat <<EOF | lxd init --preseed
@@ -37,7 +31,7 @@ EOF
 # LXD required modules for storage
 loops='max_loop=256'
 nbds='nbds_max=256'
-one_file=$one_file'.conf'
+one_file='one-lxd.conf'
 
 echo "options loop ${loops}" >> /etc/modprobe.d/"${one_file}"
 echo "options nbd ${nbds}" >> /etc/modprobe.d/"${one_file}"
