@@ -1,0 +1,2 @@
+src/vmm_mad/remotes/lib/lxd/svncterm_server/svncterm_server            /usr/bin/
+src/vmm_mad/remotes/lib/lxd/one-lxd            /etc/sudoers.d/
