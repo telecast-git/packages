@@ -181,7 +181,7 @@ Description: empty package to prepare a machine as OpenNebula Node
  cloud.
 
 Package: opennebula-node-lxd
-Architecture: all
+Architecture: any
 Depends: opennebula-node,
          kpartx,
          libvncserver1,
