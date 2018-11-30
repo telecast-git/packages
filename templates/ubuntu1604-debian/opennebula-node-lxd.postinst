@@ -31,7 +31,7 @@ EOF
 # LXD required modules for storage
 loops='max_loop=256'
 nbds='nbds_max=256'
-one_file='one-lxd.conf'
+one_file='opennebula-lxd.conf'
 
 echo "options loop ${loops}" >> /etc/modprobe.d/"${one_file}"
 echo "options nbd ${nbds}" >> /etc/modprobe.d/"${one_file}"
