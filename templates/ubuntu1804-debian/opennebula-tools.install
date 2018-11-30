@@ -15,6 +15,7 @@ dist/etc/one/cli/onevdc.yaml        /etc/one/cli/
 dist/etc/one/cli/onevmgroup.yaml    /etc/one/cli/
 dist/etc/one/cli/onevm.yaml         /etc/one/cli/
 dist/etc/one/cli/onevnet.yaml       /etc/one/cli/
+dist/etc/one/cli/onevntemplate.yaml /etc/one/cli/
 dist/etc/one/cli/onevrouter.yaml    /etc/one/cli/
 dist/etc/one/cli/onezone.yaml       /etc/one/cli/
 

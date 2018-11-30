@@ -1006,6 +1006,7 @@ EOF
 %config %{_sysconfdir}/one/cli/onevmgroup.yaml
 %config %{_sysconfdir}/one/cli/onevm.yaml
 %config %{_sysconfdir}/one/cli/onevnet.yaml
+%config %{_sysconfdir}/one/cli/onevntemplate.yaml
 %config %{_sysconfdir}/one/cli/onevrouter.yaml
 %config %{_sysconfdir}/one/cli/onezone.yaml
 
@@ -1054,6 +1055,7 @@ EOF
 %{_mandir}/man1/onevm.1*
 %{_mandir}/man1/onevmgroup.1*
 %{_mandir}/man1/onevnet.1*
+%{_mandir}/man1/onevntemplate.1*
 %{_mandir}/man1/onevrouter.1*
 %{_mandir}/man1/onezone.1*
 
