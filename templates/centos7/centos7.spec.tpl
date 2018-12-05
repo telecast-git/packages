@@ -372,7 +372,7 @@ OpenNebula host provisioning tool
 
 # Compile OpenNebula
 # scons -j2 mysql=yes new_xmlrpc=yes
-../build_opennebula.sh systemd=yes
+../build_opennebula.sh systemd=yes svncterm=no
 cd src/oca/java
 ./build.sh -d
 
