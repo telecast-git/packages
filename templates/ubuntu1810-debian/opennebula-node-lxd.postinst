@@ -2,10 +2,12 @@
 
 set -e
 
-adduser oneadmin lxd
-
-# Configure LXD daemon
-cat <<EOF | lxd init --preseed
+if [ "$1" = "configure" ]; then
+  
+  adduser oneadmin lxd
+  
+  # Configure LXD daemon
+  cat <<EOF | lxd init --preseed
 config: {}
 cluster: null
 networks: []
@@ -28,20 +30,18 @@ profiles:
         type: disk
 EOF
 
-# LXD required modules for storage
-loops='max_loop=256'
-nbds='nbds_max=256'
+  # LXD required modules for storage
+  loops='max_loop=256'
+  nbds='nbds_max=256'
 
-one_file='opennebula-lxd.conf'
+  one_file='opennebula-lxd.conf'
 
-echo "options loop ${loops}" >> /etc/modprobe.d/"${one_file}"
-echo "options nbd ${nbds}" >> /etc/modprobe.d/"${one_file}"
+  echo "options loop ${loops}" >> /etc/modprobe.d/"${one_file}"
+  echo "options nbd ${nbds}" >> /etc/modprobe.d/"${one_file}"
 
-echo "loop" >> /etc/modules-load.d/"${one_file}" 
-echo "nbd" >> /etc/modules-load.d/"${one_file}"
+  echo "loop" >> /etc/modules-load.d/"${one_file}" 
+  echo "nbd" >> /etc/modules-load.d/"${one_file}"
 
-modprobe loop "${loops}"
-modprobe nbd "${nbds}"
-
-# Additional setup
-printf "If you plan to use ceph, issue\\necho \"rbd default features = 3\" >> /etc/ceph/ceph.conf\n"
+  modprobe loop "${loops}"
+  modprobe nbd "${nbds}"
+fi
