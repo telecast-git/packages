@@ -19,7 +19,6 @@
 %define oneadmin_gid 9869
 
 %define with_docker_machine 0%{?_with_docker_machine:1}
-%define with_provision      0%{?_with_provision:1}
 %define with_cli_extensions 0%{?_with_cli_extensions:1}
 
 #FIX: Problematic architecture dependent file in Sunstone noarch package:
@@ -41,9 +40,6 @@ Source3: build_opennebula.sh
 Source4: xml_parse_huge.patch
 %if %{with_docker_machine}
 Source5: opennebula-docker-machine-%{version}.tar.gz
-%endif
-%if %{with_provision}
-Source6: opennebula-provision-%PROVISION_VERSION%.tar.gz
 %endif
 %if %{with_cli_extensions}
 Source7: opennebula-cli-extensions-%{version}.tar.gz
@@ -326,23 +322,16 @@ Configures an OpenNebula node providing kvm.
 # Package provisioning tool
 ################################################################################
 
-%if %{with_provision}
 %package provision
-Version: %PROVISION_VERSION%
-Summary: OpenNebula host provisioning tool
+Summary: OpenNebula provisioning tool
 BuildArch: noarch
-#Requires: %{name} = %{version}
-#Requires: %{name}-common = %{version}
-#Requires: %{name}-server = %{version}
-#Requires: %{name}-ruby = %{version}
-Requires: %{name}        >= 5.6.1, %{name}        < 5.7.0
-Requires: %{name}-common >= 5.6.1, %{name}-common < 5.7.0
-Requires: %{name}-server >= 5.6.1, %{name}-server < 5.7.0
-Requires: %{name}-ruby   >= 5.6.1, %{name}-ruby   < 5.7.0
+Requires: %{name} = %{version}
+Requires: %{name}-common = %{version}
+Requires: %{name}-server = %{version}
+Requires: %{name}-ruby = %{version}
 
 %description provision
-OpenNebula host provisioning tool
-%endif
+OpenNebula provisioning tool
 
 ################################################################################
 # Build and install
@@ -352,9 +341,6 @@ OpenNebula host provisioning tool
 %setup -q
 %if %{with_docker_machine}
 %setup -T -D -a 5
-%endif
-%if %{with_provision}
-%setup -T -D -a 6
 %endif
 %if %{with_cli_extensions}
 %setup -T -D -a 7
@@ -381,12 +367,6 @@ export DESTDIR=%{buildroot}
 ./install.sh
 %if %{with_docker_machine}
     ./install.sh -e
-%endif
-%if %{with_provision}
-    (
-        cd provision
-        ./install.sh
-    )
 %endif
 %if %{with_cli_extensions}
     (
@@ -551,7 +531,6 @@ fi
 # provision - scripts
 ################################################################################
 
-%if %{with_provision}
 %post provision
 if [ $1 = 1 ]; then
     if [ ! -d "%{oneadmin_home}/.ssh/ddc/" ]; then
@@ -559,7 +538,6 @@ if [ $1 = 1 ]; then
         su oneadmin -c "ssh-keygen -N '' -t rsa -f %{oneadmin_home}/.ssh/ddc/id_rsa"
     fi
 fi
-%endif
 
 ################################################################################
 # node-xen - scripts
@@ -647,6 +625,7 @@ EOF
 /usr/lib/one/ruby/opennebula.rb
 /usr/lib/one/ruby/opennebula/*
 /usr/lib/one/ruby/vendors/rbvmomi/*
+/usr/lib/one/ruby/vendors/packethost
 
 /usr/lib/one/ruby/OpenNebula.rb
 
@@ -816,33 +795,13 @@ EOF
 # provision - files
 ################################################################################
 
-%if %{with_provision}
 %files provision
-%defattr(0640, root, oneadmin, 0750)
-%config %{_sysconfdir}/one/packet_driver.default
-
 %defattr(-, root, root, 0755)
-%config %{_sysconfdir}/one/cli/oneprovision.yaml
 %{_bindir}/oneprovision
+%config %{_sysconfdir}/one/cli/oneprovision*.yaml
 /usr/lib/one/ruby/cli/one_helper/oneprovision_helper*
-/usr/lib/one/ruby/packet_driver.rb
-/usr/lib/one/ruby/vendors/packethost/*
 %{_datadir}/one/oneprovision/*
 %{_mandir}/man1/oneprovision.1*
-
-%defattr(-, oneadmin, oneadmin, 0750)
-%dir %{_sharedstatedir}/one/remotes/pm
-%dir %{_sharedstatedir}/one/remotes/pm/dummy
-%dir %{_sharedstatedir}/one/remotes/pm/packet
-%dir %{_sharedstatedir}/one/remotes/pm/ec2
-%dir %{_sharedstatedir}/one/remotes/im/packet.d
-%dir %{_sharedstatedir}/one/remotes/vmm/packet
-%{_sharedstatedir}/one/remotes/pm/dummy/*
-%{_sharedstatedir}/one/remotes/pm/packet/*
-%{_sharedstatedir}/one/remotes/pm/ec2/*
-%{_sharedstatedir}/one/remotes/im/packet.d/*
-%{_sharedstatedir}/one/remotes/vmm/packet/*
-%endif
 
 ################################################################################
 # CLI extensions - files
@@ -872,6 +831,7 @@ EOF
 %config %{_sysconfdir}/one/az_driver.default
 %config %{_sysconfdir}/one/vcenter_driver.conf
 %config %{_sysconfdir}/one/vcenter_driver.default
+%config %{_sysconfdir}/one/packet_driver.default
 %config %{_sysconfdir}/one/auth/server_x509_auth.conf
 %config %{_sysconfdir}/one/auth/ldap_auth.conf
 %config %{_sysconfdir}/one/auth/x509_auth.conf
@@ -908,6 +868,7 @@ EOF
 /usr/lib/one/ruby/ssh_stream.rb
 /usr/lib/one/ruby/vcenter_driver.rb
 /usr/lib/one/ruby/vcenter_driver/*
+/usr/lib/one/ruby/packet_driver.rb
 /usr/lib/one/ruby/VirtualMachineDriver.rb
 /usr/lib/one/sh/*
 
@@ -931,9 +892,14 @@ EOF
 %dir %{_sharedstatedir}/one/remotes/im/lxd.d
 %dir %{_sharedstatedir}/one/remotes/im/lxd-probes.d
 %dir %{_sharedstatedir}/one/remotes/im/one.d
+%dir %{_sharedstatedir}/one/remotes/im/packet.d
 %dir %{_sharedstatedir}/one/remotes/im/vcenter.d
 %dir %{_sharedstatedir}/one/remotes/ipam
 %dir %{_sharedstatedir}/one/remotes/market
+%dir %{_sharedstatedir}/one/remotes/pm
+%dir %{_sharedstatedir}/one/remotes/pm/dummy
+%dir %{_sharedstatedir}/one/remotes/pm/packet
+%dir %{_sharedstatedir}/one/remotes/pm/ec2
 %dir %{_sharedstatedir}/one/remotes/tm
 %dir %{_sharedstatedir}/one/remotes/vmm
 %dir %{_sharedstatedir}/one/remotes/vmm/az
@@ -942,6 +908,7 @@ EOF
 %dir %{_sharedstatedir}/one/remotes/vmm/lxd
 %dir %{_sharedstatedir}/one/remotes/vmm/lib
 %dir %{_sharedstatedir}/one/remotes/vmm/one
+%dir %{_sharedstatedir}/one/remotes/vmm/packet
 %dir %{_sharedstatedir}/one/remotes/vmm/vcenter
 %dir %{_sharedstatedir}/one/remotes/vnm
 %dir %{_sharedstatedir}/one/vms
@@ -961,11 +928,15 @@ EOF
 %{_sharedstatedir}/one/remotes/im/lxd.d/*
 %{_sharedstatedir}/one/remotes/im/lxd-probes.d/*
 %{_sharedstatedir}/one/remotes/im/one.d/*
+%{_sharedstatedir}/one/remotes/im/packet.d/*
 %{_sharedstatedir}/one/remotes/im/vcenter.d/*
 %{_sharedstatedir}/one/remotes/im/run_probes
 %{_sharedstatedir}/one/remotes/im/stop_probes
 %{_sharedstatedir}/one/remotes/ipam/*
 %{_sharedstatedir}/one/remotes/market/*
+%{_sharedstatedir}/one/remotes/pm/dummy/*
+%{_sharedstatedir}/one/remotes/pm/packet/*
+%{_sharedstatedir}/one/remotes/pm/ec2/*
 %{_sharedstatedir}/one/remotes/tm/*
 %{_sharedstatedir}/one/remotes/vmm/az/*
 %{_sharedstatedir}/one/remotes/vmm/ec2/*
@@ -973,6 +944,7 @@ EOF
 %{_sharedstatedir}/one/remotes/vmm/lxd/*
 %{_sharedstatedir}/one/remotes/vmm/lib/*
 %{_sharedstatedir}/one/remotes/vmm/one/*
+%{_sharedstatedir}/one/remotes/vmm/packet/*
 %{_sharedstatedir}/one/remotes/vmm/vcenter/*
 %{_sharedstatedir}/one/remotes/vnm/*
 %{_sharedstatedir}/one/remotes/scripts_common.rb

@@ -23,16 +23,6 @@ CONTACT='OpenNebula Team <contact@opennebula.org>'
 
 DATE_R=`date -R`
 
-# Additional package versions
-for S in $URL $@; do
-    S_NAME=$(basename "${S}")
-    if [[ ${S_NAME} =~ ^opennebula-provision-([0-9\.]+)\.tar\.gz$ ]]; then
-        PROVISION_VERSION=${PROVISION_VERSION:-${BASH_REMATCH[1]}}
-    fi
-done
-
-PROVISION_VERSION=${PROVISION_VERSION:-$VERSION}
-
 # clean $BUILD_DIR
 mkdir -p $BUILD_DIR
 rm -rf $BUILD_DIR/*
@@ -96,20 +86,9 @@ $NAME ($VERSION-$PKG_VERSION) unstable; urgency=low
 EOF
 mv newchangelog changelog
 
-# Process provision changelog
-cat <<EOF > newchangelog
-$NAME (${PROVISION_VERSION}-${PKG_VERSION}) unstable; urgency=low
-
-  * Imported from http://packages.qa.debian.org/o/opennebula.html
-
- -- $CONTACT $DATE_R
-
-EOF
-mv newchangelog ${NAME}-provision.changelog
-
 # parse and substitute values in templates
 for f in `ls`; do
-    for i in URL SOURCE PACKAGE NAME VERSION PROVISION_VERSION DATE_R CONTACT PKG_VERSION; do
+    for i in URL SOURCE PACKAGE NAME VERSION DATE_R CONTACT PKG_VERSION; do
         VAL=$(eval "echo \${$i}")
         if [ -f "$f" ]; then
             sed -i -e "s|%$i%|$VAL|g" $f

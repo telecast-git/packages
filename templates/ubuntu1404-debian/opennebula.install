@@ -10,11 +10,15 @@ dist/var/lib/one/remotes/im/kvm-probes.d/*    /var/lib/one/remotes/im/kvm-probes
 dist/var/lib/one/remotes/im/lxd.d/*           /var/lib/one/remotes/im/lxd.d/
 dist/var/lib/one/remotes/im/lxd-probes.d/*    /var/lib/one/remotes/im/lxd-probes.d/
 dist/var/lib/one/remotes/im/one.d/*           /var/lib/one/remotes/im/one.d/
+dist/var/lib/one/remotes/im/packet.d/*        /var/lib/one/remotes/im/packet.d/
 dist/var/lib/one/remotes/im/vcenter.d/*       /var/lib/one/remotes/im/vcenter.d/
 dist/var/lib/one/remotes/im/run_probes        /var/lib/one/remotes/im/
 dist/var/lib/one/remotes/im/stop_probes       /var/lib/one/remotes/im/
 dist/var/lib/one/remotes/ipam/*               /var/lib/one/remotes/ipam/
 dist/var/lib/one/remotes/market/*             /var/lib/one/remotes/market/
+dist/var/lib/one/remotes/pm/ec2/*             /var/lib/one/remotes/pm/ec2/
+dist/var/lib/one/remotes/pm/dummy/*           /var/lib/one/remotes/pm/dummy/
+dist/var/lib/one/remotes/pm/packet/*          /var/lib/one/remotes/pm/packet/
 dist/var/lib/one/remotes/tm/*                 /var/lib/one/remotes/tm/
 dist/var/lib/one/remotes/vmm/az/*             /var/lib/one/remotes/vmm/az/
 dist/var/lib/one/remotes/vmm/ec2/*            /var/lib/one/remotes/vmm/ec2/
@@ -22,6 +26,7 @@ dist/var/lib/one/remotes/vmm/kvm/*            /var/lib/one/remotes/vmm/kvm/
 dist/var/lib/one/remotes/vmm/lxd/*            /var/lib/one/remotes/vmm/lxd/
 dist/var/lib/one/remotes/vmm/lib/*            /var/lib/one/remotes/vmm/lib/
 dist/var/lib/one/remotes/vmm/one/*            /var/lib/one/remotes/vmm/one/
+dist/var/lib/one/remotes/vmm/packet/*         /var/lib/one/remotes/vmm/packet/
 dist/var/lib/one/remotes/vmm/vcenter/*        /var/lib/one/remotes/vmm/vcenter/
 dist/var/lib/one/remotes/vnm/*                /var/lib/one/remotes/vnm/
 dist/var/lib/one/remotes/scripts_common.rb    /var/lib/one/remotes/
@@ -36,6 +41,7 @@ dist/etc/one/sched.conf          /etc/one/
 dist/etc/one/ec2_driver.conf     /etc/one/
 dist/etc/one/ec2_driver.default  /etc/one/
 dist/etc/one/az_*                /etc/one/
+dist/etc/one/packet_driver.default    /etc/one/
 dist/etc/one/vcenter_driver.conf      /etc/one/
 dist/etc/one/vcenter_driver.default   /etc/one/
 
@@ -56,6 +62,7 @@ dist/usr/lib/one/ruby/ssh_stream.rb        /usr/lib/one/ruby/
 dist/usr/lib/one/ruby/az_driver.rb  /usr/lib/one/ruby/
 dist/usr/lib/one/ruby/ec2_driver.rb /usr/lib/one/ruby/
 dist/usr/lib/one/ruby/opennebula_driver.rb /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/packet_driver.rb      /usr/lib/one/ruby/
 dist/usr/lib/one/ruby/vcenter_driver.rb     /usr/lib/one/ruby/
 dist/usr/lib/one/ruby/vcenter_driver/*      /usr/lib/one/ruby/vcenter_driver/
 

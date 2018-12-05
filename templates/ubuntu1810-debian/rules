@@ -28,9 +28,6 @@ override_dh_auto_build:
 ifneq (,$(filter docker-machine-%NAME%, $(shell dh_listpackages)))
 	tar xzvf opennebula-docker-machine-*.tar.gz
 endif
-ifneq (,$(filter %NAME%-provision, $(shell dh_listpackages)))
-	tar xzvf opennebula-provision-*.tar.gz
-endif
 ifneq (,$(filter %NAME%-cli-extensions, $(shell dh_listpackages)))
 	tar xzvf opennebula-cli-extensions-*.tar.gz
 endif
@@ -46,10 +43,6 @@ override_dh_auto_install:
 	DESTDIR=dist ./install.sh
 ifneq (,$(filter docker-machine-%NAME%, $(shell dh_listpackages)))
 	DESTDIR=dist ./install.sh -e
-endif
-ifneq (,$(filter %NAME%-provision, $(shell dh_listpackages)))
-	(cd provision && \
-	DESTDIR=../dist ./install.sh)
 endif
 ifneq (,$(filter %NAME%-cli-extensions, $(shell dh_listpackages)))
 	(cd cli-extensions && \

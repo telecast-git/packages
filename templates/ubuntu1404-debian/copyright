@@ -187,3 +187,8 @@ License: Apache-2.0
    On Debian systems, the full text of the Apache License
    Version 2.0 can be found in the file
    `/usr/share/common-licenses/Apache-2.0'.
+
+License: OpenNebula Systems Commercial Open-Source Software License
+   The full text can be found on
+   `https://raw.githubusercontent.com/OpenNebula/one/master/LICENSE.addons`.
+

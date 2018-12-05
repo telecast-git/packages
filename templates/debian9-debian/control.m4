@@ -256,21 +256,19 @@ Description: Java bindings for OpenNebula Cloud API (OCA) - documentation
  This package provides the documentation (Javadoc API) and examples for
  OpenNebula Cloud API (OCA) Java bindings.
 
+Package: opennebula-provision
+Architecture: all
+Depends: opennebula (= ${source:Version}),
+         opennebula-common (= ${source:Version}),
+         opennebula-tools (= ${source:Version}),
+         ruby-opennebula (= ${source:Version}),
+         ${misc:Depends}
+Description: OpenNebula provisioning tool
+
 ifdef(`_WITH_DOCKER_MACHINE_',`
 Package: docker-machine-opennebula
 Architecture: any
 Description: OpenNebula driver for Docker Machine
-')
-
-ifdef(`_WITH_PROVISION_',`
-Package: opennebula-provision
-Architecture: all
-Depends: opennebula (>= 5.6.1), opennebula(<< 5.7.0),
-         opennebula-common (>= 5.6.1), opennebula-common (<< 5.7.0),
-         opennebula-tools (>= 5.6.1), opennebula-tools (<< 5.7.0),
-         ruby-opennebula (>= 5.6.1), ruby-opennebula (<< 5.7.0),
-         ${misc:Depends}
-Description: OpenNebula host provisioning tool
 ')
 
 ifdef(`_WITH_CLI_EXTENSIONS_',`

@@ -1,16 +1,4 @@
-dist/etc/one/cli/oneprovision*.yaml          /etc/one/cli/
-dist/etc/one/packet_driver.default           /etc/one/
-
 dist/usr/bin/oneprovision                    /usr/bin/
-
+dist/etc/one/cli/oneprovision*.yaml          /etc/one/cli/
 dist/usr/lib/one/ruby/cli/one_helper/oneprovision_helper*   /usr/lib/one/ruby/cli/one_helper/
-dist/usr/lib/one/ruby/packet_driver.rb       /usr/lib/one/ruby/
-dist/usr/lib/one/ruby/vendors/packethost/    /usr/lib/one/ruby/vendors/
-
 dist/usr/share/one/oneprovision/*            /usr/share/one/oneprovision/
-
-dist/var/lib/one/remotes/pm/dummy/           /var/lib/one/remotes/pm/
-dist/var/lib/one/remotes/pm/packet/          /var/lib/one/remotes/pm/
-dist/var/lib/one/remotes/pm/ec2/             /var/lib/one/remotes/pm/
-dist/var/lib/one/remotes/im/packet.d/        /var/lib/one/remotes/im/
-dist/var/lib/one/remotes/vmm/packet/         /var/lib/one/remotes/vmm

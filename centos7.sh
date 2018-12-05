@@ -23,16 +23,6 @@ CONTACT='OpenNebula Team <contact\@opennebula.org>'
 
 DATE=`date +"%a %b %d %Y"`
 
-# Additional package versions
-for S in $URL $@; do
-    S_NAME=$(basename "${S}")
-    if [[ ${S_NAME} =~ ^opennebula-provision-([0-9\.]+)\.tar\.gz$ ]]; then
-        PROVISION_VERSION=${PROVISION_VERSION:-${BASH_REMATCH[1]}}
-    fi
-done
-
-PROVISION_VERSION=${PROVISION_VERSION:-$VERSION}
-
 ################################################################################
 # Purge directories
 ################################################################################
@@ -92,7 +82,7 @@ cp $SOURCES_DIR/xml_parse_huge.patch .
 ################################################################################
 # parse and substitute values in templates
 for f in `ls`; do
-    for i in URL SOURCE PACKAGE NAME VERSION PROVISION_VERSION CONTACT ETC_FILES ETC_FILES_SUNSTONE DATE PKG_VERSION; do
+    for i in URL SOURCE PACKAGE NAME VERSION CONTACT ETC_FILES ETC_FILES_SUNSTONE DATE PKG_VERSION; do
         VAL=$(eval "echo \"\${$i}\"")
         perl -p -i -e "s|%$i%|$VAL|" $SPEC
     done
