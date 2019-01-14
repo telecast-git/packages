@@ -698,7 +698,7 @@ echo ""
 %files -n python-opennebula
 %defattr(-, root, root, 0755)
 %{python_sitelib}/pyone/*
-%{python_sitelib}/opennebula*.egg-info/*
+%{python_sitelib}/pyone*.egg-info/*
 
 
 ################################################################################
