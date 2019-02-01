@@ -79,14 +79,15 @@ Architecture: all
 Depends: opennebula-common (= ${source:Version}),
          ruby-opennebula (= ${source:Version}),
          opennebula-tools (= ${source:Version}),
-         thin,
          ruby-json,
-         ruby-sinatra,
-         ruby-rack,
          python,
          python-numpy,
          ${misc:Depends}
-Conflicts: opennebula (<< ${source:Version})
+Conflicts: opennebula (<< ${source:Version}),
+           thin,
+           ruby-rack,
+           ruby-rack-protection,
+           ruby-sinatra
 Description: web interface to which executes the OpenNebula cluster services
  OpenNebula is an open source virtual infrastructure engine that enables the
  dynamic deployment and re-placement of virtual machines on a pool of physical
@@ -107,11 +108,12 @@ Architecture: all
 Depends: opennebula-common (= ${source:Version}),
          ruby-json,
          ruby-opennebula (= ${source:Version}),
-         ruby-sinatra,
-         ruby-rack,
-         thin,
          ${misc:Depends}
-Conflicts: opennebula (<< ${source:Version})
+Conflicts: opennebula (<< ${source:Version}),
+           thin,
+           ruby-rack,
+           ruby-rack-protection,
+           ruby-sinatra
 Description: send information to OpenNebula from the Virtual Machines.
  .
  ONE (OpenNebula) extends the benefits of virtualization platforms from a
@@ -126,11 +128,13 @@ Architecture: all
 Depends: opennebula-common (= ${source:Version}),
          ruby-json,
          ruby-opennebula (= ${source:Version}),
-         ruby-sinatra,
-         thin,
          curl,
          ${misc:Depends}
-Conflicts: opennebula (<< ${source:Version})
+Conflicts: opennebula (<< ${source:Version}),
+           thin,
+           ruby-rack,
+           ruby-rack-protection,
+           ruby-sinatra
 Description: Manage services.
  .
  ONE (OpenNebula) extends the benefits of virtualization platforms from a
