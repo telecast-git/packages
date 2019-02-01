@@ -50,7 +50,7 @@ dist/usr/lib/one/ruby/cloud/CloudClient.rb           /usr/lib/one/ruby/cloud/
 
 dist/usr/share/one/install_gems                      /usr/share/one/
 dist/usr/share/one/Gemfile                           /usr/share/one/
-dist/usr/share/one/Gemfile.lock                      /usr/share/one/
+#dist/usr/share/one/Gemfile.lock                      /usr/share/one/
 dist/usr/share/one/onetoken.sh                       /usr/share/one/
 
 dist/usr/bin/oneacl        /usr/bin/

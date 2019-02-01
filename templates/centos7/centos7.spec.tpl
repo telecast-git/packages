@@ -433,7 +433,7 @@ install -p -D -m 644 share/etc/sysctl.d/bridge-nf-call.conf %{buildroot}%{_sysco
 install -p -D -m 644 share/etc/cron.d/opennebula-node %{buildroot}%{_sysconfdir}/cron.d/opennebula-node
 
 # Gemfile
-install -p -D -m 644 share/install_gems/CentOS7/Gemfile.lock %{buildroot}/usr/share/one/Gemfile.lock
+#install -p -D -m 644 share/install_gems/CentOS7/Gemfile.lock %{buildroot}/usr/share/one/Gemfile.lock
 
 # Python
 cd src/oca/python
@@ -721,7 +721,7 @@ echo ""
 
 %{_datadir}/one/install_gems
 %{_datadir}/one/Gemfile
-%{_datadir}/one/Gemfile.lock
+#%{_datadir}/one/Gemfile.lock
 
 ################################################################################
 # sunstone - files

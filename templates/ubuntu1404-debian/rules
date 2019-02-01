@@ -85,7 +85,7 @@ ifneq (,$(filter %NAME%-node, $(shell dh_listpackages)))
 	dh_install -p %NAME%-node share/etc/cron.d/opennebula-node /etc/cron.d/
 endif
 ifneq (,$(filter %NAME%-tools, $(shell dh_listpackages)))
-	cp share/install_gems/Ubuntu1404/Gemfile.lock dist/usr/share/one/
+#	cp share/install_gems/Ubuntu1404/Gemfile.lock dist/usr/share/one/
 endif
 ifneq (,$(filter python-%NAME%, $(shell dh_listpackages)))
 	(cd src/oca/python/; make install ROOT=../../../dist)
