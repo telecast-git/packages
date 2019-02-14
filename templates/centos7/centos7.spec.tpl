@@ -45,7 +45,7 @@ Source5: opennebula-docker-machine-%{version}.tar.gz
 %if %{with_cli_extensions}
 Source7: opennebula-cli-extensions-%{version}.tar.gz
 %endif
-%if %{with_cli_extensions}
+%if %{with_market_addon}
 Source8: opennebula-market-addon-%{version}.tar.gz
 %endif
 
