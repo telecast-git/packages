@@ -31,6 +31,9 @@ endif
 ifneq (,$(filter %NAME%-cli-extensions, $(shell dh_listpackages)))
 	tar xzvf opennebula-cli-extensions-*.tar.gz
 endif
+ifneq (,$(filter %NAME%-market-addon, $(shell dh_listpackages)))
+	tar xzvf opennebula-market-addon-*.tar.gz
+endif
 	#XMLRPC_DIR="debian/" debian/build_opennebula.sh
 	./build_opennebula.sh systemd=yes
 	(cd src/oca/java/; \
@@ -46,6 +49,10 @@ ifneq (,$(filter docker-machine-%NAME%, $(shell dh_listpackages)))
 endif
 ifneq (,$(filter %NAME%-cli-extensions, $(shell dh_listpackages)))
 	(cd cli-extensions && \
+	DESTDIR=../dist ./install.sh)
+endif
+ifneq (,$(filter %NAME%-market-addon, $(shell dh_listpackages)))
+	(cd market-addon && \
 	DESTDIR=../dist ./install.sh)
 endif
 	dh_auto_install

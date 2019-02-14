@@ -304,11 +304,26 @@ ifdef(`_WITH_CLI_EXTENSIONS_',`
 Package: opennebula-cli-extensions
 Architecture: all
 Depends: opennebula-common (= ${source:Version}),
-         opennebula-tools (= ${source:Version}),
+         opennebula (= ${source:Version}),
          ${misc:Depends}
 Description: The CLI extension package install new subcomands that extend
  the functionality of the standard OpenNebula CLI, to enable and/or
  simplify common workflows for production deployments.
+ .
+ This package is distributed under the
+ OpenNebula Systems Commercial Open-Source Software License
+ https://raw.githubusercontent.com/OpenNebula/one/master/LICENSE.addons
+')
+
+ifdef(`_WITH_MARKET_ADDON_',`
+Package: opennebula-market-addon
+Architecture: all
+Depends: opennebula-common (= ${source:Version}),
+         opennebula (= ${source:Version}),
+         ${misc:Depends}
+Description: OpenNebula Enterprise Market Addon will link turnkeylinux.org
+ as a marketplace allowing users to easily interact and download
+ existing appliances from Turnkey.
  .
  This package is distributed under the
  OpenNebula Systems Commercial Open-Source Software License

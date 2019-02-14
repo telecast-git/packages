@@ -20,6 +20,7 @@
 
 %define with_docker_machine 0%{?_with_docker_machine:1}
 %define with_cli_extensions 0%{?_with_cli_extensions:1}
+%define with_market_addon 0%{?_with_market_addon:1}
 
 #FIX: Problematic architecture dependent file in Sunstone noarch package:
 # src/sunstone/public/node_modules/node-sass/vendor/linux-x64-48/binding.node
@@ -43,6 +44,9 @@ Source5: opennebula-docker-machine-%{version}.tar.gz
 %endif
 %if %{with_cli_extensions}
 Source7: opennebula-cli-extensions-%{version}.tar.gz
+%endif
+%if %{with_cli_extensions}
+Source8: opennebula-market-addon-%{version}.tar.gz
 %endif
 
 Patch0: proper_path_emulator.diff
@@ -272,6 +276,28 @@ https://raw.githubusercontent.com/OpenNebula/one/master/LICENSE.addons
 %endif
 
 ################################################################################
+# Package market addon
+################################################################################
+
+%if %{with_market_addon}
+%package market-addon
+License: OpenNebula Systems Commercial Open-Source Software License
+Summary: OpenNebula enterprise market addon
+BuildArch: noarch
+Requires: %{name} = %{version}
+Requires: %{name}-server = %{version}
+
+%description market-addon
+OpenNebula's Enterprise Market Addon will link turnkeylinux.org
+as a marketplace allowing users to easily interact and download
+existing appliances from Turnkey.
+
+This package is distributed under the
+OpenNebula Systems Commercial Open-Source Software License
+https://raw.githubusercontent.com/OpenNebula/one/master/LICENSE.addons
+%endif
+
+################################################################################
 # Package java
 ################################################################################
 
@@ -360,6 +386,9 @@ OpenNebula provisioning tool
 %endif
 %if %{with_cli_extensions}
 %setup -T -D -a 7
+%endif
+%if %{with_market_addon}
+%setup -T -D -a 8
 %endif
 
 %patch0 -p1
