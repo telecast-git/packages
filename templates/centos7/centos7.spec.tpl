@@ -43,10 +43,10 @@ Source4: xml_parse_huge.patch
 Source5: opennebula-docker-machine-%{version}.tar.gz
 %endif
 %if %{with_cli_extensions}
-Source7: opennebula-cli-extensions-%{version}.tar.gz
+Source7: opennebula-addon-tools-%{version}.tar.gz
 %endif
 %if %{with_market_addon}
-Source8: opennebula-market-addon-%{version}.tar.gz
+Source8: opennebula-addon-markets-%{version}.tar.gz
 %endif
 
 Patch0: proper_path_emulator.diff
@@ -258,14 +258,14 @@ OpenNebula driver for the Docker Macihne
 ################################################################################
 
 %if %{with_cli_extensions}
-%package cli-extensions
+%package addon-tools
 License: OpenNebula Systems Commercial Open-Source Software License
 Summary: OpenNebula enterprise CLI extensions
 BuildArch: noarch
 Requires: %{name} = %{version}
 Requires: %{name}-server = %{version}
 
-%description cli-extensions
+%description addon-tools
 The CLI extension package install new subcomands that extend
 the functionality of the standard OpenNebula CLI, to enable and/or
 simplify common workflows for production deployments.
@@ -280,15 +280,15 @@ https://raw.githubusercontent.com/OpenNebula/one/master/LICENSE.addons
 ################################################################################
 
 %if %{with_market_addon}
-%package market-addon
+%package addon-markets
 License: OpenNebula Systems Commercial Open-Source Software License
-Summary: OpenNebula enterprise market addon
+Summary: OpenNebula enterprise markets addon
 BuildArch: noarch
 Requires: %{name} = %{version}
 Requires: %{name}-server = %{version}
 
-%description market-addon
-OpenNebula's Enterprise Market Addon will link turnkeylinux.org
+%description addon-markets
+OpenNebula's Enterprise Market Addons will link turnkeylinux.org
 as a marketplace allowing users to easily interact and download
 existing appliances from Turnkey.
 
