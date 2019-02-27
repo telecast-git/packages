@@ -75,15 +75,14 @@ Architecture: all
 Depends: opennebula-common (= ${source:Version}),
          ruby-opennebula (= ${source:Version}),
          opennebula-tools (= ${source:Version}),
+         thin,
          ruby-json,
+         ruby-sinatra,
+         ruby-rack,
          python,
          python-numpy,
          ${misc:Depends}
-Conflicts: opennebula (<< ${source:Version}),
-           thin,
-           ruby-rack,
-           ruby-rack-protection,
-           ruby-sinatra
+Conflicts: opennebula (<< ${source:Version})
 Description: web interface to which executes the OpenNebula cluster services
  OpenNebula is an open source virtual infrastructure engine that enables the
  dynamic deployment and re-placement of virtual machines on a pool of physical
@@ -104,12 +103,11 @@ Architecture: all
 Depends: opennebula-common (= ${source:Version}),
          ruby-json,
          ruby-opennebula (= ${source:Version}),
+         ruby-sinatra,
+         ruby-rack,
+         thin,
          ${misc:Depends}
-Conflicts: opennebula (<< ${source:Version}),
-           thin,
-           ruby-rack,
-           ruby-rack-protection,
-           ruby-sinatra
+Conflicts: opennebula (<< ${source:Version})
 Description: send information to OpenNebula from the Virtual Machines.
  .
  ONE (OpenNebula) extends the benefits of virtualization platforms from a
@@ -124,13 +122,11 @@ Architecture: all
 Depends: opennebula-common (= ${source:Version}),
          ruby-json,
          ruby-opennebula (= ${source:Version}),
+         ruby-sinatra,
+         thin,
          curl,
          ${misc:Depends}
-Conflicts: opennebula (<< ${source:Version}),
-           thin,
-           ruby-rack,
-           ruby-rack-protection,
-           ruby-sinatra
+Conflicts: opennebula (<< ${source:Version})
 Description: Manage services.
  .
  ONE (OpenNebula) extends the benefits of virtualization platforms from a
@@ -224,8 +220,20 @@ Depends: opennebula-common (= ${source:Version}),
          less,
          ${misc:Depends},
          ${ruby:Depends}
-Replaces: opennebula (<< 5.5.90)
 Breaks: opennebula (<< 5.5.90)
+Replaces: opennebula (<< 5.5.90),
+          thin,
+          ruby-rack,
+          ruby-rack-protection,
+          ruby-sinatra
+Conflicts: thin,
+           ruby-rack,
+           ruby-rack-protection,
+           ruby-sinatra
+Provides: thin,
+          ruby-rack,
+          ruby-rack-protection,
+          ruby-sinatra
 Description: Command-line tools for OpenNebula Cloud
  OpenNebula is an open source virtual infrastructure engine that enables the
  dynamic deployment and re-placement of virtual machines on a pool of physical
