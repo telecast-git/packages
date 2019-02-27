@@ -25,7 +25,7 @@ yum install -y rpm-build gcc-c++ libcurl-devel libxml2-devel xmlrpc-c-devel \
 ```
 apt-get install -y pbuilder debhelper ubuntu-dev-tools bash-completion \
     bison default-jdk flex javahelper libxmlrpc3-client-java \
-    libxmlrpc3-common-java libxml2-dev ruby scons
+    libxmlrpc3-common-java libxml2-dev ruby scons dh-systemd
 ```
 
 ## Source archive
