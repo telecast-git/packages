@@ -972,7 +972,6 @@ echo ""
 %{_bindir}/one
 %{_bindir}/oned
 %{_bindir}/onedb
-%{_bindir}/tty_expect
 
 %{_datadir}/one/examples/*
 %{_datadir}/one/esx-fw-vnc/*

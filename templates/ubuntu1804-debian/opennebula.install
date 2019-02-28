@@ -83,5 +83,4 @@ dist/usr/share/one/follower_cleanup /usr/share/one/
 dist/usr/bin/oned          /usr/bin/
 dist/usr/bin/mm_sched      /usr/bin/
 dist/usr/bin/onedb         /usr/bin/
-dist/usr/bin/tty_expect    /usr/bin/
 dist/usr/bin/one           /usr/bin/
