@@ -620,6 +620,7 @@ fi
 if [ $1 = 2 ]; then
     /sbin/service opennebula-sunstone stop >/dev/null || :
     /sbin/service opennebula-novnc stop >/dev/null || :
+    /sbin/service opennebula-econe stop >/dev/null || :
 fi
 
 %post sunstone
@@ -629,6 +630,7 @@ systemctl daemon-reload 2>/dev/null || :
 if [ $1 = 0 ]; then
     /sbin/service opennebula-sunstone stop >/dev/null  || :
     /sbin/service opennebula-novnc stop >/dev/null  || :
+    /sbin/service opennebula-econe stop >/dev/null || :
 fi
 
 %postun sunstone
@@ -639,6 +641,17 @@ fi
 ################################################################################
 # gate scripts
 ################################################################################
+
+%pre gate
+# Upgrade - Stop the service
+if [ $1 = 2 ]; then
+    /sbin/service opennebula-gate stop 2>/dev/null || :
+fi
+
+%preun gate
+if [ $1 = 0 ]; then
+    /sbin/service opennebula-gate stop 2>/dev/null || :
+fi
 
 %post gate
 systemctl daemon-reload 2>/dev/null || :
@@ -651,6 +664,17 @@ fi
 ################################################################################
 # flow scripts
 ################################################################################
+
+%pre flow
+# Upgrade - Stop the service
+if [ $1 = 2 ]; then
+    /sbin/service opennebula-flow stop 2>/dev/null || :
+fi
+
+%preun flow
+if [ $1 = 0 ]; then
+    /sbin/service opennebula-flow stop 2>/dev/null || :
+fi
 
 %post flow
 systemctl daemon-reload 2>/dev/null || :
