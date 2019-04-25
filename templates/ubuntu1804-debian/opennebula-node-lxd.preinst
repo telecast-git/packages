@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+    install|upgrade)
+        if ! command -v lxd >/dev/null; then
+            export PATH=$PATH:/snap/bin
+        fi
+
+        if ! command -v lxd >/dev/null; then
+            if ! command -v snap >/dev/null; then
+                echo "Package 'snapd' must be installed as suggested dependency" >&2
+                exit 1
+            fi
+
+            # TODO: make channel configurable via preseeded values
+            SNAP_CHANNEL='3.0/stable'
+            echo "==> Installing the LXD snap from channel ${SNAP_CHANNEL}"
+            snap install lxd --channel="${SNAP_CHANNEL}"
+        fi
+
+        echo "==> Waiting for LXD to be online (10min timeout)"
+        lxd waitready --timeout=600
+        ;;
+esac

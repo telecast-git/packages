@@ -5,7 +5,11 @@ set -e
 if [ "$1" = "configure" ]; then
   
   adduser oneadmin lxd
-  
+
+  if ! command -v lxd >/dev/null; then
+    export PATH=$PATH:/snap/bin
+  fi
+
   # Configure LXD daemon
   cat <<EOF | lxd init --preseed
 config: {}
@@ -39,7 +43,7 @@ EOF
   echo "options loop ${loops}" >> /etc/modprobe.d/"${one_file}"
   echo "options nbd ${nbds}" >> /etc/modprobe.d/"${one_file}"
 
-  echo "loop" >> /etc/modules-load.d/"${one_file}" 
+  echo "loop" >> /etc/modules-load.d/"${one_file}"
   echo "nbd" >> /etc/modules-load.d/"${one_file}"
 
   modprobe loop "${loops}"
