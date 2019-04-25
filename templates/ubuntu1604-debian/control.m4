@@ -189,6 +189,10 @@ Depends: opennebula-node,
          libvncserver1
 Pre-Depends: lxd (>= 3.0.0) | snapd
 Suggests: rbd-nbd
+Replaces: lxd (<< 3.0.0),
+          lxd-client (<< 3.0.0)
+Conflicts: lxd (<< 3.0.0),
+           lxd-client (<< 3.0.0)
 Description: sets up an OpenNebula LXD virtualization node
 
 Package: python-pyone
