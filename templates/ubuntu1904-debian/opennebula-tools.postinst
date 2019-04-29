@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ]; then
+
+cat <<EOF
+Please remember to execute /usr/share/one/install_gems to install all the
+required gems.
+EOF
+
+fi
+
+#DEBHELPER#

@@ -1,0 +1,55 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ]; then
+
+  adduser oneadmin lxd
+  echo "oneadmin ALL=(ALL:ALL) NOPASSWD: /usr/bin/lxc" >> /etc/sudoers.d/opennebula-lxd
+
+  if ! command -v lxd >/dev/null; then
+    export PATH=$PATH:/snap/bin
+  fi
+
+  # Configure LXD daemon
+  cat <<EOF | lxd init --preseed
+config: {}
+cluster: null
+networks: []
+storage_pools:
+- config: {}
+  description: ""
+  name: default
+  driver: dir
+profiles:
+  - name: default
+    description: Default LXD profile  for OpenNebula
+    config:
+       limits.cpu: "1"
+       limits.cpu.allowance: 50%
+       limits.memory: 512MB
+       security.idmap.base: "100000"
+       security.idmap.isolated: "true"
+       security.idmap.size: "65536"
+    devices:
+      root:
+        path: /
+        pool: default
+        type: disk
+EOF
+
+  # LXD required modules for storage
+  loops='max_loop=256'
+  nbds='nbds_max=256'
+
+  one_file='opennebula-lxd.conf'
+
+  echo "options loop ${loops}" >> /etc/modprobe.d/"${one_file}"
+  echo "options nbd ${nbds}" >> /etc/modprobe.d/"${one_file}"
+
+  echo "loop" >> /etc/modules-load.d/"${one_file}" 
+  echo "nbd" >> /etc/modules-load.d/"${one_file}"
+
+  modprobe loop "${loops}"
+  modprobe nbd "${nbds}"
+fi
