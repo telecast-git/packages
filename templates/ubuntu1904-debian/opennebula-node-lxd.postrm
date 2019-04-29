@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -e
+
+deluser oneadmin lxd
+
+one_file='opennebula-lxd'
+if test -f '/etc/sudoers/'$one_file
+then
+	rm $one_file
+fi
+
+one_file='opennebula-lxd.conf'
+for i in '/etc/modprobe.d' '/etc/modules-load.d'; do
+	
+	if test -f $i/$one_file
+    then
+		rm $i/$one_file
+	fi
+done
