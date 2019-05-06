@@ -187,9 +187,9 @@ Architecture: any
 Depends: opennebula-node,
          kpartx,
          libvncserver1
-Pre-Depends: snapd | lxd (>= 3.0.0)
 Recommends: lxd (>= 3.0.0)
-Suggests: rbd-nbd
+Suggests: rbd-nbd,
+          snapd
 Replaces: lxd (<< 3.0.0),
           lxd-client (<< 3.0.0)
 Conflicts: lxd (<< 3.0.0),
