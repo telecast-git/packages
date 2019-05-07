@@ -3,13 +3,24 @@
 set -e
 
 if [ "$1" = "configure" ]; then
+    if ! command -v lxd >/dev/null; then
+        export PATH=$PATH:/snap/bin
+    fi
+
+    # customizations only on LXD from snap
+    if [ -f /snap/bin/lxc ]; then
+        # sudo should find the 'lxc' command not specified
+        # as absolute path in a sudo "secure_path" directories
+        if ! [ -f /usr/bin/lxc ]; then
+            ln -s /snap/bin/lxc /usr/bin/lxc
+        fi
+
+        echo "oneadmin ALL=(ALL:ALL) NOPASSWD: /snap/bin/lxc" >> /etc/sudoers.d/opennebula-lxd
+    fi
+
+    ###
 
   adduser oneadmin lxd
-  echo "oneadmin ALL=(ALL:ALL) NOPASSWD: /snap/bin/lxc" >> /etc/sudoers.d/opennebula-lxd
-
-  if ! command -v lxd >/dev/null; then
-    export PATH=$PATH:/snap/bin
-  fi
 
   # Configure LXD daemon
   cat <<EOF | lxd init --preseed
