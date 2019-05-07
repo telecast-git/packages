@@ -2,6 +2,8 @@
 
 set -e
 
+ONE_USER=oneadmin
+
 PRESEED_SNAP=''
 
 if [ "$1" = "configure" ]; then
@@ -33,7 +35,9 @@ if [ "$1" = "configure" ]; then
             ln -s /snap/bin/lxc /usr/bin/lxc
         fi
 
-        echo "oneadmin ALL=(ALL:ALL) NOPASSWD: /snap/bin/lxc" >> /etc/sudoers.d/opennebula-lxd
+        if ! grep -qF '/snap/bin/lxc' /etc/sudoers.d/opennebula-lxd; then
+            echo "oneadmin ALL=(ALL:ALL) NOPASSWD: /snap/bin/lxc" >> /etc/sudoers.d/opennebula-lxd
+        fi
 
         PRESEED_SNAP=$(cat <<EOF
        security.idmap.base: "100000"
@@ -45,10 +49,15 @@ EOF
 
     ###
 
-  adduser oneadmin lxd
+    # Add oneadmin user into lxd group
+    if getent group lxd >/dev/null; then
+        if ! getent group lxd | cut -f4 -d: | grep -q "\<${ONE_USER}\>"; then
+            adduser "${ONE_USER}" lxd
+        fi
+    fi
 
-  # Configure LXD daemon
-  cat <<EOF | lxd init --preseed
+    # Configure LXD daemon
+    cat <<EOF | lxd init --preseed
 config: {}
 cluster: null
 networks: []
@@ -72,18 +81,26 @@ profiles:
 ${PRESEED_SNAP}
 EOF
 
-  # LXD required modules for storage
-  loops='max_loop=256'
-  nbds='nbds_max=256'
+    #TODO: move into package contained configuration files
+    # LXD required modules for storage
+    PARAMS_LOOP='max_loop=256'
+    PARAMS_NBD='nbds_max=256'
 
-  one_file='opennebula-lxd.conf'
+    MODULES_CONF='opennebula-lxd.conf'
+    if ! [ -f "/etc/modprobe.d/${MODULES_CONF}" ]; then
+        cat - <<EOF >"/etc/modprobe.d/${MODULES_CONF}"
+options loop ${PARAMS_LOOP}
+options nbd  ${PARAMS_NBD}
+EOF
+    fi
 
-  echo "options loop ${loops}" >> /etc/modprobe.d/"${one_file}"
-  echo "options nbd ${nbds}" >> /etc/modprobe.d/"${one_file}"
+    if ! [ -f "/etc/modules-load.d/${MODULES_CONF}" ]; then
+        cat - <<EOF >"/etc/modules-load.d/${MODULES_CONF}"
+loop
+nbd
+EOF
+    fi
 
-  echo "loop" >> /etc/modules-load.d/"${one_file}" 
-  echo "nbd" >> /etc/modules-load.d/"${one_file}"
-
-  modprobe loop "${loops}"
-  modprobe nbd "${nbds}"
+    modprobe loop "${PARAMS_LOOP}"
+    modprobe nbd  "${PARAMS_NBD}"
 fi
