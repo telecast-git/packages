@@ -2,11 +2,14 @@
 
 set -e
 
+PRESEED_SNAP=''
+
 if [ "$1" = "configure" ]; then
     if ! command -v lxd >/dev/null; then
         export PATH=$PATH:/snap/bin
     fi
 
+    # install LXD from snap
     if ! command -v lxd >/dev/null; then
         if ! command -v snap >/dev/null; then
             echo "To install LXD snap, snapd must be already installed." >&2
@@ -22,13 +25,27 @@ if [ "$1" = "configure" ]; then
         lxd waitready --timeout=600
     fi
 
+    # customizations only on LXD from snap
+    if [ -f /snap/bin/lxc ]; then
+        # sudo should find the 'lxc' command not specified
+        # as absolute path in a sudo "secure_path" directories
+        if ! [ -f /usr/bin/lxc ]; then
+            ln -s /snap/bin/lxc /usr/bin/lxc
+        fi
+
+        echo "oneadmin ALL=(ALL:ALL) NOPASSWD: /snap/bin/lxc" >> /etc/sudoers.d/opennebula-lxd
+
+        PRESEED_SNAP=$(cat <<EOF
+       security.idmap.base: "100000"
+       security.idmap.isolated: "true"
+       security.idmap.size: "65536"
+EOF
+)
+    fi
+
     ###
 
   adduser oneadmin lxd
-
-  if ! command -v lxd >/dev/null; then
-    export PATH=$PATH:/snap/bin
-  fi
 
   # Configure LXD daemon
   cat <<EOF | lxd init --preseed
@@ -43,15 +60,16 @@ storage_pools:
 profiles:
   - name: default
     description: Default LXD profile  for OpenNebula
-    config:
-       limits.cpu: "1"
-       limits.cpu.allowance: 50%
-       limits.memory: 512MB
     devices:
       root:
         path: /
         pool: default
         type: disk
+    config:
+       limits.cpu: "1"
+       limits.cpu.allowance: 50%
+       limits.memory: 512MB
+${PRESEED_SNAP}
 EOF
 
   # LXD required modules for storage
