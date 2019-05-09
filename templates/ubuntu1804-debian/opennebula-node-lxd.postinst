@@ -11,22 +11,6 @@ if [ "$1" = "configure" ]; then
         export PATH=$PATH:/snap/bin
     fi
 
-    # install LXD from snap
-    if ! command -v lxd >/dev/null; then
-        if ! command -v snap >/dev/null; then
-            echo "To install LXD snap, snapd must be already installed." >&2
-            exit 1
-        fi
-
-        # TODO: make channel configurable via preseeded values
-        SNAP_CHANNEL='3.0/stable'
-        echo "==> Installing the LXD snap from channel ${SNAP_CHANNEL}"
-        snap install lxd --channel="${SNAP_CHANNEL}"
-
-        echo "==> Waiting for LXD to be online (10min timeout)"
-        lxd waitready --timeout=600
-    fi
-
     # customizations only on LXD from snap
     if [ -f /snap/bin/lxc ]; then
         # sudo should find the 'lxc' command not specified
