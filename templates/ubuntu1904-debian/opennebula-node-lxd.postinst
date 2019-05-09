@@ -19,6 +19,7 @@ if [ "$1" = "configure" ]; then
 
         if ! grep -qF '/snap/bin/lxc' /etc/sudoers.d/opennebula-lxd; then
             echo 'oneadmin ALL=(ALL:ALL) NOPASSWD: /snap/bin/lxc' >> /etc/sudoers.d/opennebula-lxd
+            echo 'Defaults:oneadmin secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/snap/bin' >> /etc/sudoers.d/opennebula-lxd
         fi
     fi
 
