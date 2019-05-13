@@ -183,7 +183,7 @@ Description: empty package to prepare a machine as OpenNebula Node
  This package prepares the machine for being a node in an OpenNebula
  cloud.
 
-Package: lxd-snap
+Package: opennebula-lxd-snap
 Architecture: any
 Pre-Depends: snapd
 Replaces: lxd,
@@ -197,7 +197,7 @@ Architecture: any
 Depends: opennebula-node,
          kpartx,
          libvncserver1,
-         lxd (>= 3.0.0) | lxd-snap (= ${source:Version})
+         lxd (>= 3.0.0) | opennebula-lxd-snap (= ${source:Version})
 Suggests: rbd-nbd
 Replaces: lxd (<< 3.0.0),
           lxd-client (<< 3.0.0)
