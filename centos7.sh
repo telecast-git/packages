@@ -107,6 +107,32 @@ _BUILD_COMPONENTS=${BUILD_COMPONENTS,,}
 rpmbuild -ba $SPEC ${_BUILD_COMPONENTS:+ --with ${_BUILD_COMPONENTS//[[:space:]]/ --with }} || exit 1
 
 ################################################################################
+# Build Ruby gems packages
+################################################################################
+
+RUBYGEMS_DIR="$(dirname "$0")/rubygems"
+
+# install dependencies
+"${RUBYGEMS_DIR}"/prepare.sh
+
+# get Gemfile, Gemfile.lock
+tar -xvf "${SOURCES_DIR}/${SOURCE}" \
+    -O "${NAME}-${VERSION}/share/install_gems/Gemfile" \
+    > Gemfile
+
+tar -xvf "${SOURCES_DIR}/${SOURCE}" \
+    -O "${NAME}-${VERSION}/share/install_gems/CentOS7/Gemfile" \
+    > Gemfile.lock
+
+# build packages
+"${RUBYGEMS_DIR}"/gemtopackage.rb -t rpm \
+    --packager "${CONTACT}" \
+    --release "${PKG_VERSION}" \
+    -p "${BUILD_DIR}" \
+    -g Gemfile \
+    -l Gemfile.lock
+
+################################################################################
 # Put all the RPMs into a tar.gz
 ################################################################################
 
