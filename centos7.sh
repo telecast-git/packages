@@ -111,7 +111,7 @@ rpmbuild -ba $SPEC ${_BUILD_COMPONENTS:+ --with ${_BUILD_COMPONENTS//[[:space:]]
 ################################################################################
 
 set -e
-RUBYGEMS_DIR="$(dirname $(readlink -f "$0"))/rubygems"
+RUBYGEMS_DIR=$HOME/packages/rubygems
 
 # install dependencies
 "${RUBYGEMS_DIR}"/prepare.sh
