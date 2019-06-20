@@ -110,6 +110,8 @@ rpmbuild -ba $SPEC ${_BUILD_COMPONENTS:+ --with ${_BUILD_COMPONENTS//[[:space:]]
 # Build Ruby gems packages
 ################################################################################
 
+set -e
+pwd
 RUBYGEMS_DIR="$(dirname "$0")/rubygems"
 
 # install dependencies
