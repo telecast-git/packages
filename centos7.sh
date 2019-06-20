@@ -117,11 +117,11 @@ RUBYGEMS_DIR=$HOME/packages/rubygems
 "${RUBYGEMS_DIR}"/prepare.sh redhat
 
 # get Gemfile, Gemfile.lock
-tar -xvf "${SOURCES_DIR}/${SOURCE}" \
+tar -xvf "${RPMBUILDIR}/SOURCES/${SOURCE}" \
     -O "${NAME}-${VERSION}/share/install_gems/Gemfile" \
     > Gemfile
 
-tar -xvf "${SOURCES_DIR}/${SOURCE}" \
+tar -xvf "${RPMBUILDIR}/SOURCES/${SOURCE}" \
     -O "${NAME}-${VERSION}/share/install_gems/CentOS7/Gemfile" \
     > Gemfile.lock
 
