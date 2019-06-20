@@ -114,7 +114,7 @@ set -e
 RUBYGEMS_DIR=$HOME/packages/rubygems
 
 # install dependencies
-"${RUBYGEMS_DIR}"/prepare.sh
+"${RUBYGEMS_DIR}"/prepare.sh redhat
 
 # get Gemfile, Gemfile.lock
 tar -xvf "${SOURCES_DIR}/${SOURCE}" \
