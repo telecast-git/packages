@@ -20,14 +20,14 @@
 set -e
 
 if [ $# -gt 1 ]; then
-    echo "Syntax: $(basename $0) [debian|redhat]" >&2
+    echo "Syntax: $(basename "$0") [debian|redhat]" >&2
     exit 1
 fi
 
 # detect target
 if command -v dpkg >/dev/null; then
     OPTION=${1:-debian}
-elif comman/dev/null; then
+elif command -v rpm >/dev/null; then
     OPTION=${1:-redhat}
 fi
 
@@ -58,7 +58,7 @@ esac
 # Install packages
 for PACKAGE in "${PACKAGES[@]}"; do
     echo "Install ${PACKAGE}"
-    ${INSTALL_CMD} ${PACKAGE} >/dev/null
+    ${INSTALL_CMD} "${PACKAGE}" >/dev/null
 done
 
 # Install Bundler
