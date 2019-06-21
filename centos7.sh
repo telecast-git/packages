@@ -122,7 +122,7 @@ tar -xvf "${RPMBUILDIR}/SOURCES/${SOURCE}" \
     > Gemfile
 
 tar -xvf "${RPMBUILDIR}/SOURCES/${SOURCE}" \
-    -O "${NAME}-${VERSION}/share/install_gems/CentOS7/Gemfile" \
+    -O "${NAME}-${VERSION}/share/install_gems/CentOS7/Gemfile.lock" \
     > Gemfile.lock
 
 # build packages
