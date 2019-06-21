@@ -134,11 +134,11 @@ RUBYGEMS_DIR=$HOME/packages/rubygems
 "${RUBYGEMS_DIR}"/prepare.sh debian
 
 # get Gemfile, Gemfile.lock
-tar -xvf "${RPMBUILDIR}/SOURCES/${SOURCE}" \
+tar -xvf "${BUILD_DIR}/${NAME}_${VERSION}.orig.tar.gz" \
     -O "${NAME}-${VERSION}/share/install_gems/Gemfile" \
     > /tmp/Gemfile
 
-tar -xvf "${RPMBUILDIR}/SOURCES/${SOURCE}" \
+tar -xvf "${BUILD_DIR}/${NAME}_${VERSION}.orig.tar.gz" \
     -O "${NAME}-${VERSION}/share/install_gems/Ubuntu1804/Gemfile.lock" \
     > /tmp/Gemfile.lock
 
