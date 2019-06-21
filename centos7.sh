@@ -106,6 +106,11 @@ sudo -n yum-builddep -y "$SPEC" || :
 _BUILD_COMPONENTS=${BUILD_COMPONENTS,,}
 rpmbuild -ba $SPEC ${_BUILD_COMPONENTS:+ --with ${_BUILD_COMPONENTS//[[:space:]]/ --with }} || exit 1
 
+# cleanup build dir
+BUILD_DIR=$HOME/build
+rm -rf $BUILD_DIR
+mkdir -p $BUILD_DIR/src
+
 ################################################################################
 # Build Ruby gems packages
 ################################################################################
@@ -137,9 +142,9 @@ tar -xvf "${RPMBUILDIR}/SOURCES/${SOURCE}" \
 # Put all the RPMs into a tar.gz
 ################################################################################
 
-BUILD_DIR=$HOME/build
-rm -rf $BUILD_DIR
-mkdir -p $BUILD_DIR/src
+#BUILD_DIR=$HOME/build
+#rm -rf $BUILD_DIR
+#mkdir -p $BUILD_DIR/src
 
 cp $HOME/rpmbuild/RPMS/x86_64/* $BUILD_DIR
 cp $HOME/rpmbuild/RPMS/noarch/* $BUILD_DIR
