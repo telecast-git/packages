@@ -120,35 +120,43 @@ HTTP_PROXY=$(apt-config dump --format '%v' Acquire::http::proxy)
 PB_HTTP_PROXY=${HTTP_PROXY:+--http-proxy "${HTTP_PROXY}"}
 
 pbuilder-dist bionic amd64 create --updates-only ${PB_HTTP_PROXY}
+
+# build Ruby gems
+pbuilder-dist bionic amd64 execute --bindmounts /root -- \
+    /root/packages/rubygems/build.sh \
+    "${BUILD_DIR}/${NAME}_${VERSION}.orig.tar.gz" \
+    "${PBUILD_DIR}" \
+    Ubuntu1804
+
 pbuilder-dist bionic amd64 build ${PB_HTTP_PROXY} ../*dsc
 
-################################################################################
-# Build Ruby gems packages
-################################################################################
-
-set -e
-pwd
-RUBYGEMS_DIR=$HOME/packages/rubygems
-
-# install dependencies
-"${RUBYGEMS_DIR}"/prepare.sh debian
-
-# get Gemfile, Gemfile.lock
-tar -xvf "${BUILD_DIR}/${NAME}_${VERSION}.orig.tar.gz" \
-    -O "${NAME}-${VERSION}/share/install_gems/Gemfile" \
-    > /tmp/Gemfile
-
-tar -xvf "${BUILD_DIR}/${NAME}_${VERSION}.orig.tar.gz" \
-    -O "${NAME}-${VERSION}/share/install_gems/Ubuntu1804/Gemfile.lock" \
-    > /tmp/Gemfile.lock
-
-# build packages
-"${RUBYGEMS_DIR}"/gemtopackage.rb -t deb \
-    --packager "${CONTACT}" \
-    --release "${PKG_VERSION}" \
-    -p "${PBUILD_DIR}" \
-    -g /tmp/Gemfile \
-    -l /tmp/Gemfile.lock
+#################################################################################
+## Build Ruby gems packages
+#################################################################################
+#
+#set -e
+#pwd
+#RUBYGEMS_DIR=$HOME/packages/rubygems
+#
+## install dependencies
+#"${RUBYGEMS_DIR}"/prepare.sh debian
+#
+## get Gemfile, Gemfile.lock
+#tar -xvf "${BUILD_DIR}/${NAME}_${VERSION}.orig.tar.gz" \
+#    -O "${NAME}-${VERSION}/share/install_gems/Gemfile" \
+#    > /tmp/Gemfile
+#
+#tar -xvf "${BUILD_DIR}/${NAME}_${VERSION}.orig.tar.gz" \
+#    -O "${NAME}-${VERSION}/share/install_gems/Ubuntu1804/Gemfile.lock" \
+#    > /tmp/Gemfile.lock
+#
+## build packages
+#"${RUBYGEMS_DIR}"/gemtopackage.rb -t deb \
+#    --packager "${CONTACT}" \
+#    --release "${PKG_VERSION}" \
+#    -p "${PBUILD_DIR}" \
+#    -g /tmp/Gemfile \
+#    -l /tmp/Gemfile.lock
 
 # build a tar.gz with the files
 cd $PBUILD_DIR

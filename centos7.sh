@@ -111,32 +111,39 @@ BUILD_DIR=$HOME/build
 rm -rf $BUILD_DIR
 mkdir -p $BUILD_DIR/src
 
-################################################################################
-# Build Ruby gems packages
-################################################################################
+#################################################################################
+## Build Ruby gems packages
+#################################################################################
 
 set -e
-RUBYGEMS_DIR=$HOME/packages/rubygems
 
-# install dependencies
-"${RUBYGEMS_DIR}"/prepare.sh redhat
+/root/packages/rubygems/build.sh \
+    "${RPMBUILDIR}/SOURCES/${SOURCE}" \
+    "${BUILD_DIR}" \
+    CentOS7
 
-# get Gemfile, Gemfile.lock
-tar -xvf "${RPMBUILDIR}/SOURCES/${SOURCE}" \
-    -O "${NAME}-${VERSION}/share/install_gems/Gemfile" \
-    > Gemfile
-
-tar -xvf "${RPMBUILDIR}/SOURCES/${SOURCE}" \
-    -O "${NAME}-${VERSION}/share/install_gems/CentOS7/Gemfile.lock" \
-    > Gemfile.lock
-
-# build packages
-"${RUBYGEMS_DIR}"/gemtopackage.rb -t rpm \
-    --packager "${CONTACT}" \
-    --release "${PKG_VERSION}" \
-    -p "${BUILD_DIR}" \
-    -g Gemfile \
-    -l Gemfile.lock
+#set -e
+#RUBYGEMS_DIR=$HOME/packages/rubygems
+#
+## install dependencies
+#"${RUBYGEMS_DIR}"/prepare.sh redhat
+#
+## get Gemfile, Gemfile.lock
+#tar -xvf "${RPMBUILDIR}/SOURCES/${SOURCE}" \
+#    -O "${NAME}-${VERSION}/share/install_gems/Gemfile" \
+#    > Gemfile
+#
+#tar -xvf "${RPMBUILDIR}/SOURCES/${SOURCE}" \
+#    -O "${NAME}-${VERSION}/share/install_gems/CentOS7/Gemfile.lock" \
+#    > Gemfile.lock
+#
+## build packages
+#"${RUBYGEMS_DIR}"/gemtopackage.rb -t rpm \
+#    --packager "${CONTACT}" \
+#    --release "${PKG_VERSION}" \
+#    -p "${BUILD_DIR}" \
+#    -g Gemfile \
+#    -l Gemfile.lock
 
 ################################################################################
 # Put all the RPMs into a tar.gz
