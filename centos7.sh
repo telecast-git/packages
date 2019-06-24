@@ -124,8 +124,9 @@ mock -r "${MOCK_CFG}" --enable-network \
 
 # build source and binary package
 mock -r "${MOCK_CFG}" --init
-SRPM=$(rpmbuild -bs "${SPEC}" ${_WITH_COMPONENTS} | grep 'Wrote:' | cut -d: -f2)
-mock -r "${MOCK_CFG}" rebuild "${SRPM}" ${_WITH_COMPONENTS}
+SRPM=$(rpmbuild -bs "${SPEC}" ${_WITH_COMPONENTS} | grep 'Wrote:' | cut -d' ' -f2)
+mock -r "${MOCK_CFG}" --installdeps "${SRPM}" ${_WITH_COMPONENTS}
+mock -r "${MOCK_CFG}" --rebuild "${SRPM}" ${_WITH_COMPONENTS}
 
 ##################################################################################
 ### Build Ruby gems packages
