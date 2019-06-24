@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+set -e
+
 rm -rf ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 mkdir -p ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 
@@ -114,8 +116,6 @@ mkdir -p $BUILD_DIR/src
 #################################################################################
 ## Build Ruby gems packages
 #################################################################################
-
-set -e
 
 /root/packages/rubygems/build.sh \
     "${RPMBUILDIR}/SOURCES/${SOURCE}" \

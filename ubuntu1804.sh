@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+set -e
+
 BASE_DIR=$(readlink -f $(dirname $0))
 
 SOURCES_DIR=$BASE_DIR/sources
