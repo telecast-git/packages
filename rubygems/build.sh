@@ -30,7 +30,7 @@ tar -xvf "${SOURCE}" \
 # detect package type
 if command -v dpkg >/dev/null; then
     PKG=${1:-deb}
-elif comman/dev/null; then
+elif command -v rpm >/dev/null; then
     PKG=${1:-rpm}
 fi
 
