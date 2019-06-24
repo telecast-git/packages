@@ -243,6 +243,7 @@ Summary: Transfer information from Virtual Machines to OpenNebula
 BuildArch: noarch
 Requires: %{name}-common = %{version}
 Requires: %{name}-ruby = %{version}
+Requires: %{name}-rubygems = %{version}
 
 %description gate
 Transfer information from Virtual Machines to OpenNebula
@@ -256,6 +257,7 @@ Summary: Manage OpenNebula Services
 BuildArch: noarch
 Requires: %{name}-common = %{version}
 Requires: %{name}-ruby = %{version}
+Requires: %{name}-rubygems = %{version}
 
 %description flow
 Manage OpenNebula Services
@@ -391,6 +393,7 @@ Requires: %{name} = %{version}
 Requires: %{name}-common = %{version}
 Requires: %{name}-server = %{version}
 Requires: %{name}-ruby = %{version}
+Requires: %{name}-rubygems = %{version}
 
 %description provision
 OpenNebula provisioning tool
@@ -793,6 +796,12 @@ echo ""
 %{_datadir}/one/install_gems
 %{_datadir}/one/Gemfile
 %{_datadir}/one/Gemfile.lock
+
+################################################################################
+# rubygems - files
+################################################################################
+
+%files rubygems
 
 ################################################################################
 # sunstone - files
