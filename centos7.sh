@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-set -e
+set -e -o pipefail
 
 rm -rf ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 mkdir -p ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
@@ -100,28 +100,42 @@ fi
 
 rm -rf $HOME/rpmbuild/RPMS/x86_64/* $HOME/rpmbuild/RPMS/noarch/* $HOME/rpmbuild/SRPMS/*
 
-################################################################################
-# Build the package
-################################################################################
-
-sudo -n yum-builddep -y "$SPEC" || :
-_BUILD_COMPONENTS=${BUILD_COMPONENTS,,}
-rpmbuild -ba $SPEC ${_BUILD_COMPONENTS:+ --with ${_BUILD_COMPONENTS//[[:space:]]/ --with }} || exit 1
-
 # cleanup build dir
 BUILD_DIR=$HOME/build
 rm -rf $BUILD_DIR
 mkdir -p $BUILD_DIR/src
 
-#################################################################################
-## Build Ruby gems packages
-#################################################################################
+################################################################################
+# Build the package
+################################################################################
 
-/root/packages/rubygems/build.sh \
-    "${RPMBUILDIR}/SOURCES/${SOURCE}" \
-    "${BUILD_DIR}" \
-    CentOS7
+_BUILD_COMPONENTS=${BUILD_COMPONENTS,,}
+_WITH_COMPONENTS=${_BUILD_COMPONENTS:+ --with ${_BUILD_COMPONENTS//[[:space:]]/ --with }}
 
+MOCK_CFG='epel-7-x86_64'
+
+# build Ruby gems
+mock -r "${MOCK_CFG}" --init
+mock -r "${MOCK_CFG}" --install yum
+mock -r "${MOCK_CFG}" --enable-network \
+    --enable-plugin=bind_mount \
+    --plugin-option=bind_mount:dirs='[("/root", "/root")]'
+    --chroot "/root/packages/rubygems/build.sh ${RPMBUILDIR}/SOURCES/${SOURCE} ${BUILD_DIR} CentOS7"
+
+# build source and binary package
+mock -r "${MOCK_CFG}" --init
+SRPM=$(rpmbuild -bs "${SPEC}" ${_WITH_COMPONENTS} | grep 'Wrote:' | cut -d: -f2)
+mock -r "${MOCK_CFG}" rebuild "${SRPM}" ${_WITH_COMPONENTS}
+
+##################################################################################
+### Build Ruby gems packages
+##################################################################################
+#
+#/root/packages/rubygems/build.sh \
+#    "${RPMBUILDIR}/SOURCES/${SOURCE}" \
+#    "${BUILD_DIR}" \
+#    CentOS7
+#
 #set -e
 #RUBYGEMS_DIR=$HOME/packages/rubygems
 #
