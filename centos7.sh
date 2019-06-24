@@ -123,10 +123,11 @@ mock -r "${MOCK_CFG}" --enable-network \
     --chroot "/root/packages/rubygems/build.sh ${RPMBUILDIR}/SOURCES/${SOURCE} ${BUILD_DIR} CentOS7"
 
 # build source and binary package
-mock -r "${MOCK_CFG}" --init
+MOCK_DIR=$(mktemp -d)
 SRPM=$(rpmbuild -bs "${SPEC}" ${_WITH_COMPONENTS} | grep 'Wrote:' | cut -d' ' -f2)
-mock -r "${MOCK_CFG}" --installdeps "${SRPM}" ${_WITH_COMPONENTS}
-mock -r "${MOCK_CFG}" --rebuild "${SRPM}" ${_WITH_COMPONENTS}
+mock -r "${MOCK_CFG}" --init
+#mock -r "${MOCK_CFG}" --installdeps "${SRPM}" ${_WITH_COMPONENTS}
+mock -r "${MOCK_CFG}" --rebuild "${SRPM}" --resultdir="${MOCK_DIR}" ${_WITH_COMPONENTS}
 
 ##################################################################################
 ### Build Ruby gems packages
@@ -168,9 +169,12 @@ mock -r "${MOCK_CFG}" --rebuild "${SRPM}" ${_WITH_COMPONENTS}
 #rm -rf $BUILD_DIR
 #mkdir -p $BUILD_DIR/src
 
-cp $HOME/rpmbuild/RPMS/x86_64/* $BUILD_DIR
-cp $HOME/rpmbuild/RPMS/noarch/* $BUILD_DIR
-cp $HOME/rpmbuild/SRPMS/* $BUILD_DIR/src
+#cp $HOME/rpmbuild/RPMS/x86_64/* $BUILD_DIR
+#cp $HOME/rpmbuild/RPMS/noarch/* $BUILD_DIR
+#cp $HOME/rpmbuild/SRPMS/* $BUILD_DIR/src
+cp "${MOCK_DIR}"/*.rpm "${BUILD_DIR}"
+cp "${SRPM}" "${BUILD_DIR}/src"
+rm -rf "${MOCK_DIR}"
 
 cd $BUILD_DIR
 tar czf $NAME-$VERSION-$PKG_VERSION.tar.gz \

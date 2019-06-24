@@ -88,6 +88,7 @@ Requires: less
 
 Requires: %{name}-common = %{version}
 Requires: %{name}-ruby = %{version}
+Requires: %{name}-rubygems = %{version}
 
 ################################################################################
 # Main Package
@@ -159,13 +160,14 @@ Group: System
 BuildArch: noarch
 Requires: ruby
 Requires: rubygems
+Requires: %{name}-rubygems = %{version}
 #Requires: rubygem-sqlite3-ruby
-Requires: rubygem-json
+#Requires: rubygem-json
 #Requires: rubygem-rack
 #Requires: rubygem-sinatra
 #Requires: rubygem-thin
 #Requires: rubygem-uuidtools
-Requires: rubygem-nokogiri
+#Requires: rubygem-nokogiri
 #Requires: rubygem-sequel
 #Requires: ruby-mysql
 
@@ -182,6 +184,22 @@ Requires: rubygem-nokogiri
 
 %description ruby
 Ruby interface for OpenNebula.
+
+
+################################################################################
+# Package rubygems
+################################################################################
+
+%package rubygems
+Summary: Provides the OpenNebula Ruby gem dependencies
+Group: System
+BuildArch: noarch
+Requires: ruby
+Requires: rubygems
+Requires: %{name}-rubygem-kvakva
+
+%description rubygems
+Ruby gems dependencies for OpenNebula.
 
 ################################################################################
 # Package python
@@ -207,6 +225,7 @@ Summary: Browser based UI and public cloud interfaces.
 BuildArch: noarch
 Requires: %{name}-common = %{version}
 Requires: %{name}-ruby = %{version}
+Requires: %{name}-rubygems = %{version}
 Requires: python
 Requires: numpy
 
