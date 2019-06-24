@@ -196,7 +196,7 @@ Group: System
 BuildArch: noarch
 Requires: ruby
 Requires: rubygems
-Requires: %{name}-rubygem-kvakva
+_RUBYGEMS_REQ_
 
 %description rubygems
 Ruby gems dependencies for OpenNebula.

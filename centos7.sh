@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 set -e -o pipefail
 
@@ -45,11 +45,6 @@ cp templates/$DISTRO/* $RPMBUILDIR/SOURCES/
 
 cd $RPMBUILDIR/SOURCES
 
-################################################################################
-# Copy the template
-################################################################################
-
-cp -f $DISTRO.spec.tpl $SPEC
 
 ################################################################################
 # Download source package to SOURCE dir
@@ -83,16 +78,17 @@ cp $SOURCES_DIR/xml_parse_huge.patch .
 # Substitute variables in template
 ################################################################################
 # parse and substitute values in templates
-for f in `ls`; do
-    for i in URL SOURCE PACKAGE NAME VERSION CONTACT ETC_FILES ETC_FILES_SUNSTONE DATE PKG_VERSION; do
-        VAL=$(eval "echo \"\${$i}\"")
-        perl -p -i -e "s|%$i%|$VAL|" $SPEC
-    done
-done
-
-if [ -n "$MOCK" ]; then
-    exit 0
-fi
+#for f in `ls`; do
+#    for i in URL SOURCE PACKAGE NAME VERSION CONTACT ETC_FILES ETC_FILES_SUNSTONE DATE PKG_VERSION; do
+#        VAL=$(eval "echo \"\${$i}\"")
+#        perl -p -i -e "s|%$i%|$VAL|" $SPEC
+#    done
+#done
+#
+#
+#if [ -n "$MOCK" ]; then
+#    exit 0
+#fi
 
 ################################################################################
 # Clean RPMs
@@ -106,11 +102,8 @@ rm -rf $BUILD_DIR
 mkdir -p $BUILD_DIR/src
 
 ################################################################################
-# Build the package
+# Build Ruby gems
 ################################################################################
-
-_BUILD_COMPONENTS=${BUILD_COMPONENTS,,}
-_WITH_COMPONENTS=${_BUILD_COMPONENTS:+ --with ${_BUILD_COMPONENTS//[[:space:]]/ --with }}
 
 MOCK_CFG='epel-7-x86_64'
 
@@ -122,7 +115,32 @@ mock -r "${MOCK_CFG}" --enable-network \
     --plugin-option=bind_mount:dirs='[("/root", "/root")]' \
     --chroot "/root/packages/rubygems/build.sh ${RPMBUILDIR}/SOURCES/${SOURCE} ${BUILD_DIR} CentOS7"
 
-# build source and binary package
+# generate spec requirements for all Ruby gem packages
+RUBYGEMS_REQ=''
+while IFS= read -r LINE; do
+    _NAME=$(echo "${LINE}" | cut -d' ' -f1)
+    _VERSION=$(echo "${LINE}" | cut -d' ' -f2)
+    _RELEASE=$(echo "${LINE}" | cut -d' ' -f3)
+
+    RUBYGEMS_REQ="${RUBYGEMS_REQ}Requires: ${_NAME} = ${_VERSION}"$'\n'
+done < <(rpm -qp "${BUILD_DIR}"/opennebula-rubygem-*.rpm --queryformat '%{NAME} %{VERSION} %{RELEASE}\n')
+
+################################################################################
+# Copy the template
+################################################################################
+
+m4 -D_VERSION_="${VERSION}" \
+    -D_PKG_VERSION_="${PKG_VERSION}" \
+    -D_RUBYGEMS_REQ_="${RUBYGEMS_REQ}" \
+    "${DISTRO}.spec.m4" >"${SPEC}"
+
+################################################################################
+# Build the package
+################################################################################
+
+_BUILD_COMPONENTS=${BUILD_COMPONENTS,,}
+_WITH_COMPONENTS=${_BUILD_COMPONENTS:+ --with ${_BUILD_COMPONENTS//[[:space:]]/ --with }}
+
 MOCK_DIR=$(mktemp -d)
 SRPM=$(rpmbuild -bs "${SPEC}" ${_WITH_COMPONENTS} | grep 'Wrote:' | cut -d' ' -f2)
 mock -r "${MOCK_CFG}" --init
