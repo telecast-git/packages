@@ -119,7 +119,7 @@ mock -r "${MOCK_CFG}" --init
 mock -r "${MOCK_CFG}" --install yum
 mock -r "${MOCK_CFG}" --enable-network \
     --enable-plugin=bind_mount \
-    --plugin-option=bind_mount:dirs='[("/root", "/root")]'
+    --plugin-option=bind_mount:dirs='[("/root", "/root")]' \
     --chroot "/root/packages/rubygems/build.sh ${RPMBUILDIR}/SOURCES/${SOURCE} ${BUILD_DIR} CentOS7"
 
 # build source and binary package
