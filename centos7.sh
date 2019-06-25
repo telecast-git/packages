@@ -129,9 +129,9 @@ done < <(rpm -qp "${BUILD_DIR}"/opennebula-rubygem-*.rpm --queryformat '%{NAME} 
 # Copy the template
 ################################################################################
 
-m4 -D_VERSION_="${VERSION}" \
-    -D_PKG_VERSION_="${PKG_VERSION}" \
-    -D_RUBYGEMS_REQ_="${RUBYGEMS_REQ}" \
+m4 -D__VERSION__="${VERSION}" \
+    -D__PKG_VERSION__="${PKG_VERSION}" \
+    -D__RUBYGEMS_REQ__="${RUBYGEMS_REQ}" \
     "${DISTRO}.spec.m4" >"${SPEC}"
 
 ################################################################################

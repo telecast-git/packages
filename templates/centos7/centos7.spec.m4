@@ -27,9 +27,9 @@
 %define _binaries_in_noarch_packages_terminate_build   0
 
 Name: opennebula
-Version: %VERSION%
+Version: __VERSION__
 Summary: Cloud computing solution for Data Center Virtualization
-Release: %PKG_VERSION%
+Release: __PKG_VERSION__
 License: Apache
 Group: System
 URL: http://opennebula.org
@@ -196,7 +196,7 @@ Group: System
 BuildArch: noarch
 Requires: ruby
 Requires: rubygems
-_RUBYGEMS_REQ_
+__RUBYGEMS_REQ__
 
 %description rubygems
 Ruby gems dependencies for OpenNebula.
