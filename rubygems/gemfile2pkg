@@ -206,69 +206,71 @@ end
 
 ARGV << '-h' if ARGV.empty?
 
+# option defaults
 options = {}
+options[:packageType] = nil
+options[:lockfilePath] = '/usr/share/one/Gemfile.lock'
+options[:gemfilePath] = '/usr/share/one/Gemfile'
+options[:installLocation] = '/usr/share/one/gems'
+options[:binPath] = nil
+options[:packageLocation] = '.'
+options[:buildDirectory] = "#{__dir__}/build"
+options[:namePrefix] = 'opennebula-rubygem'
+options[:packager] = 'OpenNebula'
+options[:release] = 1
+options[:chooseGems] = nil
+options[:excludeGems] = nil
+options[:show] = false
+
 optparser = OptionParser.new do |opts|
-  options[:packageType] = nil
   opts.on('-t', '--packagetype TYPE',
           'Type of created packages (deb, rpm)') do |type|
     options[:packageType] = type
   end
-  options[:lockfilePath] = '/usr/share/one/Gemfile.lock'
   opts.on('-l', '--lockfilepath PATH',
-          'Path to lockfile (default: /usr/share/one/Gemfile.lock)') do |path|
+          "Path to Gemfile.lock (default: #{options[:lockfilePath]})") do |path|
     options[:lockfilePath] = path
   end
-  options[:gemfilePath] = '/usr/share/one/Gemfile'
   opts.on('-g', '--gemfilepath PATH',
-          'Path to gemfile (default: /usr/share/one/Gemfile)') do |path|
+          "Path to Gemfile (default: #{options[:gemfilePath]})") do |path|
     options[:gemfilePath] = path
   end
-  options[:installLocation] = '/usr/lib/one/gems'
   opts.on('-i', '--installlocation PATH',
-          'Path where packages will be installed (default: /usr/lib/one/gems)') do |path|
+          "Gems install location (default: #{options[:installLocation]})") do |path|
     options[:installLocation] = path
   end
-  options[:binPath] = nil
   opts.on('--gembinpath PATH',
-          'Path where bin files of gems will be installed (default: installlocation/bin)') do |path|
+          'Gems binaries install location (default: installlocation/bin)') do |path|
     options[:binPath] = path
   end
-  options[:packageLocation] = '.'
   opts.on('-p', '--packagelocation PATH',
-          'Path where packages will be created (default: .)') do |path|
+          "Path where packages will be created (default: #{options[:packageLocation]})") do |path|
     options[:packageLocation] = path
   end
-  options[:buildDirectory] = "#{__dir__}/build"
   opts.on('-b', '--builddirectory DIR',
-          'Directory used for building gems (default: ./build)') do |path|
+          "Build directory (default: #{options[:buildDirectory]})") do |path|
     options[:buildDirectory] = path
   end
-  options[:namePrefix] = 'opennebula-rubygem'
   opts.on('-f', '--packagenameprefix NAME',
-          'Prefix of created packages (default: opennebula-rubygem)') do |name|
+          "Prefix of created packages (default: #{options[:namePrefix]})") do |name|
     options[:namePrefix] = name
   end
-  options[:packager] = 'OpenNebula'
   opts.on('--packager NAME',
-          'Name of packager or maintainer (default: OpenNebula)') do |name|
+          "Name of packager (default: #{options[:packager]})") do |name|
     options[:packager] = name
   end
-  options[:release] = 1
   opts.on('--release NUM', Integer,
-          'Number of release or iteration (default: 1)') do |num|
+          "Package release (default: #{options[:release]})") do |num|
     options[:release] = num
   end
-  options[:chooseGems] = nil
   opts.on('--choose=GEMS',
           'Choose gems (separated by comma)') do |gems|
     options[:chooseGems] = gems
   end
-  options[:excludeGems] = nil
   opts.on('--exclude=GEMS',
           'Exclude gems (separated by comma)') do |gems|
     options[:excludeGems] = gems
   end
-  options[:show] = false
   opts.on('-s', '--show',
           'Show gems') do
     options[:show] = true
