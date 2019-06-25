@@ -72,36 +72,6 @@ for S in $@; do
     esac
 done
 
-# Prepare files in debian/
-(
-cd debian
-
-# Process changelog
-cat <<EOF > newchangelog
-$NAME ($VERSION-$PKG_VERSION) unstable; urgency=low
-
-  * Imported from http://packages.qa.debian.org/o/opennebula.html
-
- -- $CONTACT  $DATE_R
-
-EOF
-mv newchangelog changelog
-
-# parse and substitute values in templates
-for f in `ls`; do
-    for i in URL SOURCE PACKAGE NAME VERSION DATE_R CONTACT PKG_VERSION; do
-        VAL=$(eval "echo \${$i}")
-        if [ -f "$f" ]; then
-            sed -i -e "s|%$i%|$VAL|g" $f
-        fi
-    done
-done
-
-# process control.m4
-_BUILD_COMPONENTS=${BUILD_COMPONENTS^^}
-m4 ${_BUILD_COMPONENTS:+ -D_WITH_${_BUILD_COMPONENTS//[[:space:]]/_ -D_WITH_}_} control.m4 >control
-)
-
 rm -rf $PBUILD_DIR/*
 
 # if host uses package mirror, use this for pbuilder as well
@@ -129,6 +99,36 @@ pbuilder-dist bionic amd64 execute --bindmounts /root -- \
     "${BUILD_DIR}/${NAME}_${VERSION}.orig.tar.gz" \
     "${PBUILD_DIR}" \
     Ubuntu1804
+
+# generate requirements for all Ruby gem packages
+RUBYGEMS_REQ=''
+for F in "${PBUILD_DIR}"/opennebula-rubygem-*.deb; do
+    _NAME=$(dpkg-deb -f "${F}" Package)
+    _VERS=$(dpkg-deb -f "${F}" Version)
+    RUBYGEMS_REQ="${RUBYGEMS_REQ}${_NAME} (= ${_VERS}), "
+done
+
+# Prepare files in debian/
+(
+cd debian
+
+# Process changelog
+cat <<EOF > newchangelog
+$NAME ($VERSION-$PKG_VERSION) unstable; urgency=low
+
+  * Imported from http://packages.qa.debian.org/o/opennebula.html
+
+ -- $CONTACT  $DATE_R
+
+EOF
+mv newchangelog changelog
+
+# process control.m4
+_BUILD_COMPONENTS=${BUILD_COMPONENTS^^}
+m4 -D__RUBYGEMS_REQ__="${RUBYGEMS_REQ}" \
+  ${_BUILD_COMPONENTS:+ -D_WITH_${_BUILD_COMPONENTS//[[:space:]]/_ -D_WITH_}_} \
+  control.m4 >control
+)
 
 pbuilder-dist bionic amd64 build ${PB_HTTP_PROXY} ../*dsc
 

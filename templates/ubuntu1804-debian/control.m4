@@ -239,6 +239,14 @@ Description: Ruby bindings for OpenNebula Cloud API (OCA)
  .
  This package provides the OpenNebula Cloud API (OCA) Ruby bindings.
 
+Package: opennebula-rubygems
+Architecture: all
+Depends: ruby,
+         __RUBYGEMS_REQ__
+         ${misc:Depends}
+Conflicts: opennebula (<< ${source:Version})
+Description: Metapackage to install all Ruby gem dependencies
+
 Package: opennebula-tools
 Architecture: all
 Depends: opennebula-common (= ${source:Version}),
