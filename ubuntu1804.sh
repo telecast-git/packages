@@ -84,13 +84,11 @@ if [ -f /etc/apt/sources.list.d/local-mirror.list ]; then
     fi
 fi
 
-debuild -S -us -uc -d --source-option=--include-binaries
-#debuild -S -us -uc
-
 # use APT http proxy for pbuilder
 HTTP_PROXY=$(apt-config dump --format '%v' Acquire::http::proxy)
 PB_HTTP_PROXY=${HTTP_PROXY:+--http-proxy "${HTTP_PROXY}"}
 
+# prepare pbuilder environment
 pbuilder-dist bionic amd64 create --updates-only ${PB_HTTP_PROXY}
 
 # build Ruby gems
@@ -130,6 +128,11 @@ m4 -D__RUBYGEMS_REQ__="${RUBYGEMS_REQ}" \
   control.m4 >control
 )
 
+# create source package
+debuild -S -us -uc -d --source-option=--include-binaries
+#debuild -S -us -uc
+
+# build binary packages
 pbuilder-dist bionic amd64 build ${PB_HTTP_PROXY} ../*dsc
 
 #################################################################################
