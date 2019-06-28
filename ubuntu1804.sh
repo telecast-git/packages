@@ -79,6 +79,7 @@ if [ -f /etc/apt/sources.list.d/local-mirror.list ]; then
     MIRRORSITE=$(dirname `cut -d' ' -f2 /etc/apt/sources.list.d/local-mirror.list | head -1`)
     if [[ "${DISTRO}" =~ ubuntu ]]; then
         export MIRRORSITE="${MIRRORSITE}/ubuntu/"
+        export COMPONENTS='main restricted universe'
     elif [[ "${DISTRO}" =~ debian ]]; then
         export MIRRORSITE="${MIRRORSITE}/debian/"
     fi
