@@ -2,13 +2,33 @@
 
 set -e
 
+# distro code name
+DISTRO=$(basename "$0")
+DISTRO=${DISTRO%.*}
+
+if [ "${DISTRO}" = 'debian9' ]; then
+    CODENAME='stretch'
+elif [ "${DISTRO}" = 'ubuntu1604' ]; then
+    CODENAME='xenial'
+elif [ "${DISTRO}" = 'ubuntu1804' ]; then
+    CODENAME='bionic'
+elif [ "${DISTRO}" = 'ubuntu1810' ]; then
+    CODENAME='cosmic'
+elif [ "${DISTRO}" = 'ubuntu1904' ]; then
+    CODENAME='disco'
+else
+    echo "ERROR: Invalid target '${DISTRO}'" >&2
+    exit 1
+fi
+
+###
+
 BASE_DIR=$(readlink -f $(dirname $0))
 
 SOURCES_DIR=$BASE_DIR/sources
 
-DISTRO=`basename ${0%.sh}`
-BUILD_DIR=$HOME/build-Ubuntu-18.04
-PBUILD_DIR=$HOME/pbuilder/bionic_result
+BUILD_DIR=$HOME/build-${CODENAME}
+PBUILD_DIR=$HOME/pbuilder/${CODENAME}_result
 PACKAGES_DIR=$BASE_DIR
 
 URL=$1
@@ -79,7 +99,6 @@ if [ -f /etc/apt/sources.list.d/local-mirror.list ]; then
     MIRRORSITE=$(dirname `cut -d' ' -f2 /etc/apt/sources.list.d/local-mirror.list | head -1`)
     if [[ "${DISTRO}" =~ ubuntu ]]; then
         export MIRRORSITE="${MIRRORSITE}/ubuntu/"
-        export COMPONENTS='main restricted universe'
     elif [[ "${DISTRO}" =~ debian ]]; then
         export MIRRORSITE="${MIRRORSITE}/debian/"
     fi
@@ -90,10 +109,10 @@ HTTP_PROXY=$(apt-config dump --format '%v' Acquire::http::proxy)
 PB_HTTP_PROXY=${HTTP_PROXY:+--http-proxy "${HTTP_PROXY}"}
 
 # prepare pbuilder environment
-pbuilder-dist bionic amd64 create --updates-only ${PB_HTTP_PROXY}
+pbuilder-dist "${CODENAME}" amd64 create --main-only --updates-only ${PB_HTTP_PROXY}
 
 # build Ruby gems
-pbuilder-dist bionic amd64 execute --bindmounts /root -- \
+pbuilder-dist "${CODENAME}" amd64 execute --bindmounts /root -- \
     /root/packages/rubygems/build.sh \
     "${BUILD_DIR}/${NAME}_${VERSION}.orig.tar.gz" \
     "${PBUILD_DIR}" \
@@ -134,7 +153,7 @@ debuild -S -us -uc -d --source-option=--include-binaries
 #debuild -S -us -uc
 
 # build binary packages
-pbuilder-dist bionic amd64 build ${PB_HTTP_PROXY} ../*dsc
+pbuilder-dist "${CODENAME}" amd64 build ${PB_HTTP_PROXY} ../*dsc
 
 #################################################################################
 ## Build Ruby gems packages
