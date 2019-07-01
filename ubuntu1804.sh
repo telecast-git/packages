@@ -109,7 +109,7 @@ HTTP_PROXY=$(apt-config dump --format '%v' Acquire::http::proxy)
 PB_HTTP_PROXY=${HTTP_PROXY:+--http-proxy "${HTTP_PROXY}"}
 
 # prepare pbuilder environment
-pbuilder-dist "${CODENAME}" amd64 create --main-only --updates-only ${PB_HTTP_PROXY}
+pbuilder-dist "${CODENAME}" amd64 create --updates-only ${PB_HTTP_PROXY}
 
 # build Ruby gems
 pbuilder-dist "${CODENAME}" amd64 execute --bindmounts /root -- \
