@@ -79,6 +79,7 @@ Architecture: all
 Depends: opennebula-common (= ${source:Version}),
          ruby-opennebula (= ${source:Version}),
          opennebula-tools (= ${source:Version}),
+         opennebula-rubygems (= ${source:Version}),
          thin,
          ruby-json,
          ruby-sinatra,
@@ -224,6 +225,7 @@ Depends: ruby,
          ruby-sqlite3,
          ruby-nokogiri,
          ruby-builder,
+         opennebula-rubygems (= ${source:Version}),
          ${misc:Depends},
          ${ruby:Depends}
 Breaks: opennebula-gate (<< 4.90.5), opennebula-sunstone (<< 4.90.5)

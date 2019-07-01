@@ -79,6 +79,7 @@ Architecture: all
 Depends: opennebula-common (= ${source:Version}),
          ruby-opennebula (= ${source:Version}),
          opennebula-tools (= ${source:Version}),
+         opennebula-rubygems (= ${source:Version}),
          thin,
          ruby-json,
          ruby-sinatra,
@@ -217,6 +218,7 @@ Depends: ruby,
          ruby-sqlite3,
          ruby-nokogiri,
          ruby-builder,
+         opennebula-rubygems (= ${source:Version}),
          ${misc:Depends},
          ${ruby:Depends}
 Breaks: opennebula-gate (<< 4.90.5), opennebula-sunstone (<< 4.90.5)
@@ -231,6 +233,14 @@ Description: Ruby bindings for OpenNebula Cloud API (OCA)
  only from the physical infrastructure but also from the physical location.
  .
  This package provides the OpenNebula Cloud API (OCA) Ruby bindings.
+
+Package: opennebula-rubygems
+Architecture: all
+Depends: ruby,
+         __RUBYGEMS_REQ__
+         ${misc:Depends}
+Conflicts: opennebula (<< ${source:Version})
+Description: Metapackage to install all Ruby gem dependencies
 
 Package: opennebula-tools
 Architecture: all

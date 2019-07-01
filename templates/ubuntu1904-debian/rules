@@ -25,13 +25,13 @@ export LDFLAGS:=$(shell $(dpkg_buildflags) --get LDFLAGS)
 override_dh_auto_build:
 	#scons  mysql=yes new_xmlrpc=yes
 	tar xzvf build_opennebula.tar.gz
-ifneq (,$(filter docker-machine-%NAME%, $(shell dh_listpackages)))
+ifneq (,$(filter docker-machine-opennebula, $(shell dh_listpackages)))
 	tar xzvf opennebula-docker-machine-*.tar.gz
 endif
-ifneq (,$(filter %NAME%-addon-tools, $(shell dh_listpackages)))
+ifneq (,$(filter opennebula-addon-tools, $(shell dh_listpackages)))
 	tar xzvf opennebula-addon-tools-*.tar.gz
 endif
-ifneq (,$(filter %NAME%-addon-markets, $(shell dh_listpackages)))
+ifneq (,$(filter opennebula-addon-markets, $(shell dh_listpackages)))
 	tar xzvf opennebula-addon-markets-*.tar.gz
 endif
 	#XMLRPC_DIR="debian/" debian/build_opennebula.sh
@@ -44,80 +44,80 @@ endif
 
 override_dh_auto_install:
 	DESTDIR=dist ./install.sh
-ifneq (,$(filter docker-machine-%NAME%, $(shell dh_listpackages)))
+ifneq (,$(filter docker-machine-opennebula, $(shell dh_listpackages)))
 	DESTDIR=dist ./install.sh -e
 endif
-ifneq (,$(filter %NAME%-addon-tools, $(shell dh_listpackages)))
+ifneq (,$(filter opennebula-addon-tools, $(shell dh_listpackages)))
 	(cd addon-tools && \
 	DESTDIR=../dist ./install.sh)
 endif
-ifneq (,$(filter %NAME%-addon-markets, $(shell dh_listpackages)))
+ifneq (,$(filter opennebula-addon-markets, $(shell dh_listpackages)))
 	(cd addon-markets && \
 	DESTDIR=../dist ./install.sh)
 endif
 	dh_auto_install
-ifneq (,$(filter %NAME%-common, $(shell dh_listpackages)))
-	dh_install -p %NAME%-common share/pkgs/${DISTRO}/opennebula.sudoers \
+ifneq (,$(filter opennebula-common, $(shell dh_listpackages)))
+	dh_install -p opennebula-common share/pkgs/${DISTRO}/opennebula.sudoers \
 		/etc/sudoers.d
-	mv debian/%NAME%-common/etc/sudoers.d/opennebula.sudoers \
-		debian/%NAME%-common/etc/sudoers.d/%NAME%
+	mv debian/opennebula-common/etc/sudoers.d/opennebula.sudoers \
+		debian/opennebula-common/etc/sudoers.d/opennebula
 endif
-ifneq (,$(filter %NAME%, $(shell dh_listpackages)))
-	dh_install -p %NAME% share/pkgs/logrotate/opennebula /etc/logrotate.d/
-	dh_install -p %NAME% share/pkgs/logrotate/opennebula-scheduler /etc/logrotate.d/
+ifneq (,$(filter opennebula, $(shell dh_listpackages)))
+	dh_install -p opennebula share/pkgs/logrotate/opennebula /etc/logrotate.d/
+	dh_install -p opennebula share/pkgs/logrotate/opennebula-scheduler /etc/logrotate.d/
 
-	dh_install -p %NAME% share/pkgs/${DISTRO}-systemd/opennebula.service \
+	dh_install -p opennebula share/pkgs/${DISTRO}-systemd/opennebula.service \
 		/lib/systemd/system/
-	dh_install -p %NAME% share/pkgs/${DISTRO}-systemd/opennebula-scheduler.service \
+	dh_install -p opennebula share/pkgs/${DISTRO}-systemd/opennebula-scheduler.service \
 		/lib/systemd/system/
-	dh_install -p %NAME% share/pkgs/${DISTRO}-systemd/opennebula.conf /usr/lib/tmpfiles.d/
+	dh_install -p opennebula share/pkgs/${DISTRO}-systemd/opennebula.conf /usr/lib/tmpfiles.d/
 endif
-ifneq (,$(filter %NAME%-sunstone, $(shell dh_listpackages)))
-	dh_install -p %NAME%-sunstone share/pkgs/logrotate/opennebula-econe /etc/logrotate.d/
-	dh_install -p %NAME%-sunstone share/pkgs/logrotate/opennebula-novnc /etc/logrotate.d/
-	dh_install -p %NAME%-sunstone share/pkgs/logrotate/opennebula-sunstone /etc/logrotate.d/
+ifneq (,$(filter opennebula-sunstone, $(shell dh_listpackages)))
+	dh_install -p opennebula-sunstone share/pkgs/logrotate/opennebula-econe /etc/logrotate.d/
+	dh_install -p opennebula-sunstone share/pkgs/logrotate/opennebula-novnc /etc/logrotate.d/
+	dh_install -p opennebula-sunstone share/pkgs/logrotate/opennebula-sunstone /etc/logrotate.d/
 
-	dh_install -p %NAME%-sunstone share/pkgs/${DISTRO}-systemd/%NAME%-sunstone.service \
+	dh_install -p opennebula-sunstone share/pkgs/${DISTRO}-systemd/opennebula-sunstone.service \
 		/lib/systemd/system/
-	dh_install -p %NAME%-sunstone share/pkgs/${DISTRO}-systemd/%NAME%-econe.service \
+	dh_install -p opennebula-sunstone share/pkgs/${DISTRO}-systemd/opennebula-econe.service \
 		/lib/systemd/system/
-	dh_install -p %NAME%-sunstone share/pkgs/${DISTRO}-systemd/%NAME%-novnc.service \
+	dh_install -p opennebula-sunstone share/pkgs/${DISTRO}-systemd/opennebula-novnc.service \
 		/lib/systemd/system/
 
 	cp share/pkgs/${DISTRO}-systemd/opennebula.conf \
 		share/pkgs/${DISTRO}-systemd/opennebula-sunstone.conf
-	dh_install -p %NAME%-sunstone share/pkgs/${DISTRO}-systemd/opennebula-sunstone.conf \
+	dh_install -p opennebula-sunstone share/pkgs/${DISTRO}-systemd/opennebula-sunstone.conf \
 		/usr/lib/tmpfiles.d/
 endif
-ifneq (,$(filter %NAME%-gate, $(shell dh_listpackages)))
-	dh_install -p %NAME%-gate share/pkgs/logrotate/opennebula-gate /etc/logrotate.d/
+ifneq (,$(filter opennebula-gate, $(shell dh_listpackages)))
+	dh_install -p opennebula-gate share/pkgs/logrotate/opennebula-gate /etc/logrotate.d/
 
-	dh_install -p %NAME%-gate share/pkgs/${DISTRO}-systemd/%NAME%-gate.service \
+	dh_install -p opennebula-gate share/pkgs/${DISTRO}-systemd/opennebula-gate.service \
 		/lib/systemd/system/
 
 	cp share/pkgs/${DISTRO}-systemd/opennebula.conf \
 		share/pkgs/${DISTRO}-systemd/opennebula-gate.conf
-	dh_install -p %NAME%-gate share/pkgs/${DISTRO}-systemd/opennebula-gate.conf \
+	dh_install -p opennebula-gate share/pkgs/${DISTRO}-systemd/opennebula-gate.conf \
 		/usr/lib/tmpfiles.d/
 endif
-ifneq (,$(filter %NAME%-flow, $(shell dh_listpackages)))
-	dh_install -p %NAME%-flow share/pkgs/logrotate/opennebula-flow /etc/logrotate.d/
+ifneq (,$(filter opennebula-flow, $(shell dh_listpackages)))
+	dh_install -p opennebula-flow share/pkgs/logrotate/opennebula-flow /etc/logrotate.d/
 
-	dh_install -p %NAME%-flow share/pkgs/${DISTRO}-systemd/%NAME%-flow.service \
+	dh_install -p opennebula-flow share/pkgs/${DISTRO}-systemd/opennebula-flow.service \
 		/lib/systemd/system/
 
 	cp share/pkgs/${DISTRO}-systemd/opennebula.conf \
 		share/pkgs/${DISTRO}-systemd/opennebula-flow.conf
-	dh_install -p %NAME%-flow share/pkgs/${DISTRO}-systemd/opennebula-flow.conf \
+	dh_install -p opennebula-flow share/pkgs/${DISTRO}-systemd/opennebula-flow.conf \
 		/usr/lib/tmpfiles.d/
 endif
-ifneq (,$(filter %NAME%-node, $(shell dh_listpackages)))
-	dh_install -p %NAME%-node share/etc/sysctl.d/bridge-nf-call.conf /etc/sysctl.d/
-	dh_install -p %NAME%-node share/etc/cron.d/opennebula-node /etc/cron.d/
-	dh_install -p %NAME%-node share/pkgs/${DISTRO}-systemd/opennebula-node.conf \
+ifneq (,$(filter opennebula-node, $(shell dh_listpackages)))
+	dh_install -p opennebula-node share/etc/sysctl.d/bridge-nf-call.conf /etc/sysctl.d/
+	dh_install -p opennebula-node share/etc/cron.d/opennebula-node /etc/cron.d/
+	dh_install -p opennebula-node share/pkgs/${DISTRO}-systemd/opennebula-node.conf \
 		/usr/lib/tmpfiles.d/
 endif
-ifneq (,$(filter %NAME%-tools, $(shell dh_listpackages)))
+ifneq (,$(filter opennebula-tools, $(shell dh_listpackages)))
 	cp share/install_gems/Ubuntu1904/Gemfile.lock dist/usr/share/one/
 endif
 ifneq (,$(filter python-pyone, $(shell dh_listpackages)))
@@ -125,33 +125,33 @@ ifneq (,$(filter python-pyone, $(shell dh_listpackages)))
 endif
 
 override_dh_installinit:
-ifneq (,$(filter %NAME%, $(shell dh_listpackages)))
-	dh_installinit -p %NAME% --name=%NAME% --onlyscripts --no-start
-	dh_installinit -p %NAME% --name=%NAME%-scheduler --onlyscripts --no-start
+ifneq (,$(filter opennebula, $(shell dh_listpackages)))
+	dh_installinit -p opennebula --name=opennebula --onlyscripts --no-start
+	dh_installinit -p opennebula --name=opennebula-scheduler --onlyscripts --no-start
 endif
-ifneq (,$(filter %NAME%-sunstone, $(shell dh_listpackages)))
-	dh_installinit -p %NAME%-sunstone --name=%NAME%-sunstone --onlyscripts --no-start
-	dh_installinit -p %NAME%-sunstone --name=%NAME%-econe --onlyscripts --no-start
-	dh_installinit -p %NAME%-sunstone --name=%NAME%-novnc --onlyscripts --no-start
+ifneq (,$(filter opennebula-sunstone, $(shell dh_listpackages)))
+	dh_installinit -p opennebula-sunstone --name=opennebula-sunstone --onlyscripts --no-start
+	dh_installinit -p opennebula-sunstone --name=opennebula-econe --onlyscripts --no-start
+	dh_installinit -p opennebula-sunstone --name=opennebula-novnc --onlyscripts --no-start
 endif
-ifneq (,$(filter %NAME%-gate, $(shell dh_listpackages)))
-	dh_installinit -p %NAME%-gate --name=%NAME%-gate --onlyscripts --no-start
+ifneq (,$(filter opennebula-gate, $(shell dh_listpackages)))
+	dh_installinit -p opennebula-gate --name=opennebula-gate --onlyscripts --no-start
 endif
-ifneq (,$(filter %NAME%-flow, $(shell dh_listpackages)))
-	dh_installinit -p %NAME%-flow --name=%NAME%-flow --onlyscripts --no-start
+ifneq (,$(filter opennebula-flow, $(shell dh_listpackages)))
+	dh_installinit -p opennebula-flow --name=opennebula-flow --onlyscripts --no-start
 endif
 	dh_installinit
 
 override_dh_installdeb:
-ifneq (,$(filter %NAME%-node, $(shell dh_listpackages)))
-	sed "s/@LIBVIRTGRP@/${LIB_VIRT_GROUP}/g" debian/%NAME%-node.postinst.in > debian/%NAME%-node.postinst
+ifneq (,$(filter opennebula-node, $(shell dh_listpackages)))
+	sed "s/@LIBVIRTGRP@/${LIB_VIRT_GROUP}/g" debian/opennebula-node.postinst.in > debian/opennebula-node.postinst
 endif
 	dh_installdeb
 
 override_dh_fixperms:
 	dh_fixperms
-ifneq (,$(filter %NAME%-common, $(shell dh_listpackages)))
-	chmod 0440 debian/%NAME%-common/etc/sudoers.d/%NAME%
+ifneq (,$(filter opennebula-common, $(shell dh_listpackages)))
+	chmod 0440 debian/opennebula-common/etc/sudoers.d/opennebula
 endif
 
 override_dh_systemd_start:
@@ -176,7 +176,7 @@ override_dh_auto_clean:
 		src/scheduler/.xmlrpc_test/xmlrpc_test.* \
 		src/scheduler/src/sched/.xmlrpc_test \
 		.xmlrpc_test
-	-rm -Rf debian/%NAME%-node.postinst
+	-rm -Rf debian/opennebula-node.postinst
 
 get-orig-source:
 	uscan --force-download --no-symlink
