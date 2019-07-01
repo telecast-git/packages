@@ -107,6 +107,12 @@ mkdir -p $BUILD_DIR/src
 
 MOCK_CFG='epel-7-x86_64'
 
+# use YUM http proxy
+if egrep -q 'proxy\s*=' /etc/yum.conf; then
+    http_proxy=$(egrep 'proxy\s*=' /etc/yum.conf | sed -e 's/^proxy\s*=\s*//')
+    export http_proxy
+fi
+
 # build Ruby gems
 mock -r "${MOCK_CFG}" --init
 mock -r "${MOCK_CFG}" --install yum
