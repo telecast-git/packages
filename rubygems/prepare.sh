@@ -17,7 +17,7 @@
 # limitations under the License.                                             #
 #--------------------------------------------------------------------------- #
 
-set -e
+set -e -o pipefail
 
 if [ $# -gt 1 ]; then
     echo "Syntax: $(basename "$0") [debian|redhat]" >&2
@@ -31,35 +31,36 @@ elif command -v rpm >/dev/null; then
     OPTION=${1:-redhat}
 fi
 
-# Prepare array of packages and command install for chosen distribution
+# Install packages
 case "${OPTION}" in
     'debian')
+        echo "Install build dependencies for ${OPTION}"
+
         export DEBIAN_FRONTEND=noninteractive
-        INSTALL_CMD='apt-get -y install'
-        PACKAGES=(
-            'ruby-dev' 'make' 'gcc' 'libsqlite3-dev' 'libmysqlclient-dev'
-            'libcurl4-openssl-dev' 'rake' 'libxml2-dev' 'libxslt1-dev'
-            'patch' 'g++' 'build-essential')
+
+        apt-get -y install \
+            ruby-dev make gcc libsqlite3-dev libcurl4-openssl-dev \
+            rake libxml2-dev libxslt1-dev patch g++ build-essential \
+            >/dev/null
+
+        # default-libmysqlclient-dev OR libmysqlclient-dev
+        apt-get -y install default-libmysqlclient-dev >/dev/null 2>&1 || \
+            apt-get -y install libmysqlclient-dev >/dev/null
 
         ;;
     'redhat')
-        INSTALL_CMD='yum -y install'
-        PACKAGES=(
-          'ruby-devel' 'make' 'gcc' 'sqlite-devel' 'mysql-devel'
-          'openssl-devel' 'curl-devel' 'rubygem-rake' 'libxml2-devel'
-          'libxslt-devel' 'patch' 'expat-devel' 'gcc-c++' 'rpm-build')
+        echo "Install build dependencies for ${OPTION}"
+
+        yum -y install ruby-devel make gcc sqlite-devel mysql-devel \
+            openssl-devel curl-devel rubygem-rake libxml2-devel \
+            libxslt-devel patch expat-devel gcc-c++ rpm-build \
+            >/dev/null
         ;;
     *)
         echo "ERROR: Unknown target ${OPTION}" >&2
         exit 1
         ;;
 esac
-
-# Install packages
-for PACKAGE in "${PACKAGES[@]}"; do
-    echo "Install ${PACKAGE}"
-    ${INSTALL_CMD} "${PACKAGE}" >/dev/null
-done
 
 # Install Bundler
 if ! command -v bundler >/dev/null; then
