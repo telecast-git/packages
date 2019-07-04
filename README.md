@@ -69,6 +69,7 @@ cd src/sunstone/public
 npm install -g bower grunt grunt-cli
 npm install
 bower install --allow-root --config.interactive=false
+cd bower_components/no-vnc/ && npm install && ./utils/use_require.js --clean --as amd && sed -i -e "s/'\.\//'\.\.\/bower_components\/no-vnc\/lib\//g" lib/rfb.js
 grunt sass
 grunt requirejs
 rm -rf node_modules/
