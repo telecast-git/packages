@@ -65,12 +65,10 @@ cd share/man
 cd ../../
 
 # sunstone
-cd src/sunstone/public
-npm install -g bower grunt grunt-cli
-npm install
-bower install --allow-root --config.interactive=false
-grunt sass
-grunt requirejs
+cd  src/sunstone/public
+./build.sh -d
+export PATH=$PATH:$PWD/node_modules/.bin
+./build.sh
 rm -rf node_modules/
 cd ../../../../
 
