@@ -15,10 +15,11 @@ dist/etc/one/sunstone-logos.yaml  /etc/one/
 dist/etc/one/sunstone-views.yaml   /etc/one/
 dist/etc/one/sunstone-views/*      /etc/one/sunstone-views/
 
-dist/usr/lib/one/sunstone/*.rb               /usr/lib/one/sunstone/
-dist/usr/lib/one/sunstone/models/Sunstone*   /usr/lib/one/sunstone/models/
-dist/usr/lib/one/sunstone/public/*           /usr/lib/one/sunstone/public/
-dist/usr/lib/one/sunstone/views/*            /usr/lib/one/sunstone/views/
+dist/usr/lib/one/sunstone/*.rb                      /usr/lib/one/sunstone/
+dist/usr/lib/one/sunstone/models/Sunstone*          /usr/lib/one/sunstone/models/
+dist/usr/lib/one/sunstone/models/sunstone_*         /usr/lib/one/sunstone/models/
+dist/usr/lib/one/sunstone/public/*                  /usr/lib/one/sunstone/public/
+dist/usr/lib/one/sunstone/views/*                   /usr/lib/one/sunstone/views/
 
 dist/usr/lib/one/sunstone/routes/* /usr/lib/one/sunstone/routes/
 
