@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+trap "set +x; sleep 1; set -x" DEBUG
+
 rm -rf ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 mkdir -p ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 
