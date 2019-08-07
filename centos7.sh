@@ -155,10 +155,10 @@ MOCK_DIR=$(mktemp -d)
 mock -r "${MOCK_CFG}" -v \
     --buildsrpm \
     --resultdir="${MOCK_DIR}" \
-    --spec "${SPEC}"
+    --spec "${SPEC}" \
     --sources . \
     ${_WITH_COMPONENTS}
- 
+
 SRPM=$(ls "${MOCK_DIR}/"*.src.rpm)
 cp "${SRPM}" "${BUILD_DIR}/src/"
 rm -rf "${MOCK_DIR}"
