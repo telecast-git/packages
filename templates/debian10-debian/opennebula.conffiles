@@ -1,0 +1,4 @@
+/var/lib/one/remotes/etc/datastore/ceph/ceph.conf
+/var/lib/one/remotes/etc/im/kvm-probes.d/pci.conf
+/var/lib/one/remotes/etc/vmm/kvm/kvmrc
+/var/lib/one/remotes/etc/vnm/OpenNebulaNetwork.conf

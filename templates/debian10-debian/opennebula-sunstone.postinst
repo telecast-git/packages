@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+ONEHOME=/var/lib/one
+ONEAUTH=$ONEHOME/.one/one_auth
+ONE_GROUP=oneadmin
+ONE_USER=oneadmin
+
+if [ "$1" = "configure" ]; then
+    chown -R $ONE_USER:$ONE_GROUP /var/lib/one/sunstone
+fi
+
+dpkg-maintscript-helper mv_conffile /etc/one/sunstone-views/vcenter.yaml /etc/one/sunstone-views/admin_vcenter.yaml 4.10.2-1 -- "$@"
+
+systemd-tmpfiles --create /usr/lib/tmpfiles.d/opennebula-sunstone.conf
