@@ -62,14 +62,17 @@ def parse_lockfile(lockfile, gemfile)
 
   STDERR.puts 'Parsing Lockfile'
   gems = nil
+
   Dir.chdir(temp_dir) do
     begin
       gems = Bundler::LockfileParser.new(Bundler.read_file('Gemfile.lock'))
-    rescue LockfileError => e
+    rescue Bundler::LockfileError => e
       STDERR.puts 'Error parsing lockfile'
       STDERR.puts e.message
+      exit 1
     end
   end
+
   gems
 end
 
