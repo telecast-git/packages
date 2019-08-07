@@ -147,11 +147,29 @@ m4 -D__VERSION__="${VERSION}" \
 _BUILD_COMPONENTS=${BUILD_COMPONENTS,,}
 _WITH_COMPONENTS=${_BUILD_COMPONENTS:+ --with ${_BUILD_COMPONENTS//[[:space:]]/ --with }}
 
-MOCK_DIR=$(mktemp -d)
-SRPM=$(rpmbuild -bs "${SPEC}" ${_WITH_COMPONENTS} | grep 'Wrote:' | cut -d' ' -f2)
+#SRPM=$(rpmbuild -bs "${SPEC}" ${_WITH_COMPONENTS} | grep 'Wrote:' | cut -d' ' -f2)
 mock -r "${MOCK_CFG}" --init
+
+# build source package
+MOCK_DIR=$(mktemp -d)
+mock -r "${MOCK_CFG}" -v \
+    --buildsrpm \
+    --resultdir="${MOCK_DIR}" \
+    --spec "${SPEC}"
+    --sources . \
+    ${_WITH_COMPONENTS}
+ 
+SRPM=$(ls "${MOCK_DIR}/"*.src.rpm)
+cp "${SRPM}" "${BUILD_DIR}/src/"
+rm -rf "${MOCK_DIR}"
+
+# build binary package
+MOCK_DIR=$(mktemp -d)
 #mock -r "${MOCK_CFG}" --installdeps "${SRPM}" ${_WITH_COMPONENTS}
-mock -r "${MOCK_CFG}" --rebuild "${SRPM}" --resultdir="${MOCK_DIR}" ${_WITH_COMPONENTS}
+mock -r "${MOCK_CFG}" -v \
+    --rebuild "${BUILD_DIR}/${SRPM}" \
+    --resultdir="${MOCK_DIR}" \
+    ${_WITH_COMPONENTS}
 
 ##################################################################################
 ### Build Ruby gems packages
@@ -197,7 +215,6 @@ mock -r "${MOCK_CFG}" --rebuild "${SRPM}" --resultdir="${MOCK_DIR}" ${_WITH_COMP
 #cp $HOME/rpmbuild/RPMS/noarch/* $BUILD_DIR
 #cp $HOME/rpmbuild/SRPMS/* $BUILD_DIR/src
 cp "${MOCK_DIR}"/*.rpm "${BUILD_DIR}"
-cp "${SRPM}" "${BUILD_DIR}/src"
 rm -rf "${MOCK_DIR}"
 
 cd $BUILD_DIR
