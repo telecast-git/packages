@@ -175,7 +175,7 @@ rm -rf "${MOCK_DIR}"
 MOCK_DIR=$(mktemp -d)
 #mock -r "${MOCK_CFG}" --installdeps "${SRPM}" ${_WITH_COMPONENTS}
 mock -r "${MOCK_CFG}" -v \
-    --rebuild "${BUILD_DIR}/${SRPM}" \
+    --rebuild "${BUILD_DIR}/src/${SRPM}" \
     --resultdir="${MOCK_DIR}" \
     ${_WITH_COMPONENTS}
 
