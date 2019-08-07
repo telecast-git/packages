@@ -64,7 +64,11 @@ for S in $URL $@; do
             wget -q $S || exit 1
             ;;
         *)
-            cp $(readlink --canonicalize "${S}") . || exit 1
+echo “=============••=============”
+         pwd
+	 cp /builds/cloud-team/opennebula_builder/opennebula-5.8.4.tar.gz . || exit 1
+	 ls -la
+echo “=============••=============”
     esac
 done
 
