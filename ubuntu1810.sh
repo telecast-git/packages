@@ -1,1 +1,1 @@
-debian.sh
+build/debian.sh
