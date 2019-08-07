@@ -159,8 +159,16 @@ mock -r "${MOCK_CFG}" -v \
     --sources . \
     ${_WITH_COMPONENTS}
 
-SRPM=$(ls "${MOCK_DIR}/"*.src.rpm)
-cp "${SRPM}" "${BUILD_DIR}/src/"
+# check we have 1 source RPM
+_SRPMS=$(ls "${MOCK_DIR}/"*.src.rpm)
+if [ "$(echo "${_SRPMS}" | wc -l)" -ne 1 ]; then
+    echo "ERROR: Expected 1 source RPM, but got:" >&2
+    echo "__START__${_SRPMS}__END__" >&2
+    exit 1
+fi
+
+SRPM=$(basename "${_SRPMS}")
+cp "${MOCK_DIR}/${SRPM}" "${BUILD_DIR}/src/"
 rm -rf "${MOCK_DIR}"
 
 # build binary package
